@@ -1,2 +1,2 @@
 
-.sensor.init[];
+.sensor.wss.init[];
