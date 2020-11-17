@@ -1,5 +1,8 @@
+# TODO bitmex wss
+# TODO bitmex cron agent
+# TODO bitmex effectors
 
-class BitmexClient(KDBSensor):
+class BitmexSensor(KDBSensor):
     def __init__(self):
         pass
 

@@ -1,0 +1,10 @@
+
+message RawEvent {
+  repeated source
+  repeated channel
+  repeated agent
+  repeated entity
+  repeated utctime
+  repeated utcintime
+  repeated resp
+}
