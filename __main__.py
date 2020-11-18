@@ -9,7 +9,7 @@ config = pulumi.Config()
 # isMinikube = config.get_bool("isMinikube")
 
 kafka = StrimziKafkaOperator(k8s_provider=None)
-# kafka.create_topic("events");
+events_topic = kafka.add_topic("events");
 
 # Sensors 
 #--------------------------------------------> 

@@ -9,6 +9,7 @@ import pulumi_kubernetes as k8s
 class StrimziKafkaOperator(pulumi.ComponentResource):
     def __init__(self, k8s_provider):
         self.k8s_provider = k8s_provider
+        self.topics = {}
         self.chart = k8s.helm.v3.Chart(
             "strimzi",
             k8s.helm.v3.ChartOpts( # TODO add bitnami/grafana
@@ -281,23 +282,23 @@ class StrimziKafkaOperator(pulumi.ComponentResource):
 
 
     def add_topic(self, name):
-        return {
-          "apiVersion": "kafka.strimzi.io/v1beta1",
-          "kind": "KafkaTopic",
-          "metadata": {
-            "name": "events-topic",
-            "namespace": "default",
-            "labels": {
-              "strimzi.io/cluster": "ingress-cluster"
-            }
-          },
-          "spec": {
-            "partitions": 20,
-            "replicas": 2,
-            "config": {
-              "retention.ms": 86400000,
-              "segment.bytes": 1073741824,
-              "retention.bytes": 5000000000
-            }
-          }
-        }
+        self.topics[name] = k8s.apiextensions.CustomResource(
+            "kafka",
+             api_version="kafka.strimzi.io/v1beta1",
+             kind="KafkaTopic",
+             metadata={
+                "name": name,
+                "namespace": "default",
+                "labels": {
+                  "strimzi.io/cluster": "strimzi-cluster"
+                }
+             },
+             spec={
+                "partitions": 20,
+                "replicas": 2,
+                "config": {
+                  "retention.ms": 86400000,
+                  "segment.bytes": 1073741824,
+                  "retention.bytes": 5000000000
+                }
+            })

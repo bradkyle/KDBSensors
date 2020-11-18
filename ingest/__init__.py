@@ -36,9 +36,9 @@ class KDBIngest(pulumi.ComponentResource):
                     metadata=k8s.meta.v1.ObjectMetaArgs(labels=labels),
                     spec=k8s.core.v1.PodSpecArgs(
                         containers=[
-                            # Engine
-                            # Maintains internal state and does matching engine etc
-                            # periodically requests from the queue service 
+                            # Tickerplant 
+                            # Reads from a given kafka topic and sends the events to the 
+                            # respective subscribers and persisters
                             k8s.core.v1.ContainerArgs(
                                     name="_".join([str(s) for s in [self.ingest_image.id, self.run_id, i]]),
                                     image='nginx',
