@@ -5,6 +5,7 @@ from pulumi_gcp import storage
 # from sensors import KDBSensorRegistry
 # from monitoring.monitoring import MonitoringCluster
 from infra.kafka import StrimziKafkaOperator
+from ingest import KDBIngestCanary
 config = pulumi.Config()
 # isMinikube = config.get_bool("isMinikube")
 
@@ -16,6 +17,8 @@ events_topic = kafka.add_topic("events");
 
 # AuthSensors and Effectors 
 #--------------------------------------------> 
+
+ingest = KDBIngestCanary()
 
 # Binance Futures 
 # beast.client.make()
