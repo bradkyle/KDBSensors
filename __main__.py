@@ -18,8 +18,8 @@ events_topic = kafka.add_topic("events");
 #--------------------------------------------> 
 
 # Binance Futures 
-# core.client.make()
-# core.client.make()
+# beast.client.make()
+# beast.client.make()
 
 # ingest = KDBIngestWorker(
 #     topic=kafka.get_topic("events"),
@@ -29,10 +29,16 @@ events_topic = kafka.add_topic("events");
 
 # core.make(
 #     ingest=ingest,
-#     sensors={},
+#     sensors={
+#        "":"",
+#        "":"",
+#     },
 #     agent=CoreInferenceWorker(
 #         state=CoreStateManager(),
 #         model=CoreModelWorker()
 #     ),
-#     effectors={}
+#     effectors={},
+#     percept_store=KDBPerceptStore(
+#
+#     )
 # )

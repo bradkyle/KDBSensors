@@ -40,7 +40,55 @@ class KDBIngest(pulumi.ComponentResource):
                             # Reads from a given kafka topic and sends the events to the 
                             # respective subscribers and persisters
                             k8s.core.v1.ContainerArgs(
-                                    name="_".join([str(s) for s in [self.ingest_image.id, self.run_id, i]]),
+                                    name="tickerplant",
+                                    image='nginx',
+                                    image_pull_policy="IfNotPresent",
+                                    liveness_probe=core.v1.Probe(
+                                        exec="",
+                                        failureThreshold=3
+                                    ),
+                                    redinessProbe=core.v1.Probe(
+                                        exec="",
+                                        failureThreshold=3,
+                                    ),
+                                    env=[
+
+                                    ],
+                                    ports=[],
+                                    volumeMounts=[],
+                                    resources=k8s.core.v1.ResourceRequirements(
+                                        requests={
+                                            "cpu":"1g",
+                                            "memory":"1g"
+                                        }
+                                      )
+                           ),
+                           k8s.core.v1.ContainerArgs(
+                                    name="persist",
+                                    image='nginx',
+                                    image_pull_policy="IfNotPresent",
+                                    liveness_probe=core.v1.Probe(
+                                        exec="",
+                                        failureThreshold=3
+                                    ),
+                                    redinessProbe=core.v1.Probe(
+                                        exec="",
+                                        failureThreshold=3,
+                                    ),
+                                    env=[
+
+                                    ],
+                                    ports=[],
+                                    volumeMounts=[],
+                                    resources=k8s.core.v1.ResourceRequirements(
+                                        requests={
+                                            "cpu":"1g",
+                                            "memory":"1g"
+                                        }
+                                      )
+                           ),
+                           k8s.core.v1.ContainerArgs(
+                                    name="broadcast",
                                     image='nginx',
                                     image_pull_policy="IfNotPresent",
                                     liveness_probe=core.v1.Probe(
