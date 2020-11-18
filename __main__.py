@@ -2,20 +2,32 @@
 
 import pulumi
 from pulumi_gcp import storage
-from sensors import KDBSensorRegistry
-from monitoring.monitoring import MonitoringCluster
+# from sensors import KDBSensorRegistry
+# from monitoring.monitoring import MonitoringCluster
+from infra.kafka import StrimziKafkaOperator
+config = pulumi.Config()
+# isMinikube = config.get_bool("isMinikube")
 
-# run initialization
+kafka = StrimziKafkaOperator(k8s_provider=None)
+kafka.create_topic("events");
 
-# Create a GCP resource (Storage Bucket)
-bucket = storage.Bucket('my-bucket')
+# Sensors 
+#--------------------------------------------> 
 
-# Export the DNS name of the bucket
-pulumi.export('bucket_name', bucket.url)
+# AuthSensors and Effectors 
+#--------------------------------------------> 
 
-# TODO monitoring cluster
+ingest = KDBIngestWorker(
+    topic=kafka.get_topic("events"),
+    output=(),
+    compression=True,
+)
 
-# TODO persist/tickerplant deployment 
-
-sensors.add_sensor("",  args={})
-sensors.add_sensor("",  args={})
+core.make(
+    sensors=[],
+    agent=CoreInferenceWorker(
+        state=CoreState(),
+        model=CoreModel()
+    ),
+    effectors=[]
+)

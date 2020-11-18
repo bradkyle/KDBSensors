@@ -1,17 +1,144 @@
+from clients.registration import registry, register, make, spec
 
-import clients.core
-import clients.binance
-import clients.coinbase
-import clients.huobi
-import clients.twitter
+# binance  
+#--------------------------------------------> 
 
-class KDBSensorRegistry(pulumi.ComponentResource):
-    def __init__(self, kafka_ingest, monitoring_cluster, use_ingress_kafka):
-        self.sensors = {}
-        self.kafka_ingest = kafka_ingest
-        self.monitoring_cluster = monitoring_cluster
-        self.use_ingress_kafka=use_ingress_kafka
+register(
+    id='BinanceWssSensor',
+    entry_point='beast.clients.binance:BinanceWssSensor',
+)
 
-    def add_sensor(self, name, args:KDBSensorArgs):
-        pass
+register(
+    id='BinanceAuthWssSensor',
+    entry_point='beast.clients.binance:BinanceWssSensor',
+)
 
+register(
+    id='BinanceFuturesWssSensor',
+    entry_point='beast.clients.binance:BinanceFuturesWssSensor',
+)
+
+register(
+    id='BinanceAuthFuturesWssSensor',
+    entry_point='beast.clients.binance:BinanceFuturesWssSensor',
+)
+
+register(
+    id='BinanceFuturesCronSensor',
+    entry_point='beast.clients.binance:BinanceFuturesCronSensor',
+)
+
+register(
+    id='BinanceEffector',
+    entry_point='beast.clients.binance:BinanceEffector',
+)
+
+register(
+    id='BinanceFuturesEffector',
+    entry_point='beast.clients.binance:BinanceFuturesEffector',
+)
+
+
+# bitmex 
+#--------------------------------------------> 
+
+register(
+    id='BitmexWssSensor',
+    entry_point='beast.clients.bitmex:BitmexWssSensor',
+)
+
+register(
+    id='BitmexAuthWssSensor',
+    entry_point='beast.clients.bitmex:BitmexAuthWssSensor',
+)
+
+register(
+    id='BitmexEffector',
+    entry_point='beast.clients.bitmex:BitmexEffector',
+)
+
+# okex 
+#--------------------------------------------> 
+
+register(
+    id='BinanceWssSensor',
+    entry_point='beast.clients.binance:BinanceWssSensor',
+)
+
+register(
+    id='BinanceAuthWssSensor',
+    entry_point='beast.clients.binance:BinanceWssSensor',
+)
+
+register(
+    id='BinanceFuturesWssSensor',
+    entry_point='beast.clients.binance:BinanceFuturesWssSensor',
+)
+
+register(
+    id='BinanceAuthFuturesWssSensor',
+    entry_point='beast.clients.binance:BinanceFuturesWssSensor',
+)
+
+register(
+    id='BinanceFuturesCronSensor',
+    entry_point='beast.clients.binance:BinanceFuturesCronSensor',
+)
+
+register(
+    id='BinanceEffector',
+    entry_point='beast.clients.binance:BinanceEffector',
+)
+
+register(
+    id='BinanceFuturesEffector',
+    entry_point='beast.clients.binance:BinanceFuturesEffector',
+)
+
+# coinbase 
+#--------------------------------------------> 
+
+# huobi 
+#--------------------------------------------> 
+
+# twitter 
+#--------------------------------------------> 
+
+# interactive brokers 
+#--------------------------------------------> 
+
+# iqfeed 
+#--------------------------------------------> 
+
+# rss 
+#--------------------------------------------> 
+
+# betfair 
+#--------------------------------------------> 
+
+# polygon 
+#--------------------------------------------> 
+
+# youtube 
+#--------------------------------------------> 
+
+# pushshift 
+#--------------------------------------------> 
+
+# tradingview 
+#--------------------------------------------> 
+
+# bloomberg 
+#--------------------------------------------> 
+
+# okcoin 
+#--------------------------------------------> 
+
+# kraken 
+#--------------------------------------------> 
+
+# deribit 
+#--------------------------------------------> 
+
+# robinhood 
+#--------------------------------------------> 
