@@ -17,6 +17,10 @@ kafka.create_topic("events");
 # AuthSensors and Effectors 
 #--------------------------------------------> 
 
+# Binance Futures 
+core.client.make()
+core.client.make()
+
 ingest = KDBIngestWorker(
     topic=kafka.get_topic("events"),
     output=(),
@@ -24,10 +28,10 @@ ingest = KDBIngestWorker(
 )
 
 core.make(
-    sensors=[],
+    sensors={},
     agent=CoreInferenceWorker(
         state=CoreState(),
         model=CoreModel()
     ),
-    effectors=[]
+    effectors={}
 )
