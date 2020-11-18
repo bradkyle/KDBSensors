@@ -1,6 +1,4 @@
-name: sensors
+name: gigabeast
 runtime:
   name: python
-  options:
-    virtualenv: venv
-description: A project that will deploy a set of kdb sensors into production
+description: beast

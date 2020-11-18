@@ -9,7 +9,7 @@ config = pulumi.Config()
 # isMinikube = config.get_bool("isMinikube")
 
 kafka = StrimziKafkaOperator(k8s_provider=None)
-kafka.create_topic("events");
+# kafka.create_topic("events");
 
 # Sensors 
 #--------------------------------------------> 
@@ -18,20 +18,21 @@ kafka.create_topic("events");
 #--------------------------------------------> 
 
 # Binance Futures 
-core.client.make()
-core.client.make()
+# core.client.make()
+# core.client.make()
 
-ingest = KDBIngestWorker(
-    topic=kafka.get_topic("events"),
-    output=(),
-    compression=True,
-)
+# ingest = KDBIngestWorker(
+#     topic=kafka.get_topic("events"),
+#     output=(),
+#     compression=True,
+# )
 
-core.make(
-    sensors={},
-    agent=CoreInferenceWorker(
-        state=CoreState(),
-        model=CoreModel()
-    ),
-    effectors={}
-)
+# core.make(
+#     ingest=ingest,
+#     sensors={},
+#     agent=CoreInferenceWorker(
+#         state=CoreStateManager(),
+#         model=CoreModelWorker()
+#     ),
+#     effectors={}
+# )
