@@ -1,4 +1,11 @@
 
+class KDBIngestCanary(pulumi.ComponentResource):
+    """
+    Creates a simple KDB instance to check that kafka reading etc
+    is working correctly with kdb
+    """
+    def __init__(self):
+        pass
 
 class KDBIngest(pulumi.ComponentResource):
     """
@@ -63,6 +70,8 @@ class KDBIngest(pulumi.ComponentResource):
                                         }
                                       )
                            ),
+                           # KDB container that serves to persist the events
+                           # in a partitioned manner to disk
                            k8s.core.v1.ContainerArgs(
                                     name="persist",
                                     image='nginx',
@@ -87,8 +96,36 @@ class KDBIngest(pulumi.ComponentResource):
                                         }
                                       )
                            ),
+                           # Python updloader container that periodically replicates
+                           # the hdb to cloud storage and removes old data.
                            k8s.core.v1.ContainerArgs(
-                                    name="broadcast",
+                                    name="persist",
+                                    image='nginx',
+                                    image_pull_policy="IfNotPresent",
+                                    liveness_probe=core.v1.Probe(
+                                        exec="",
+                                        failureThreshold=3
+                                    ),
+                                    redinessProbe=core.v1.Probe(
+                                        exec="",
+                                        failureThreshold=3,
+                                    ),
+                                    env=[
+
+                                    ],
+                                    ports=[],
+                                    volumeMounts=[],
+                                    resources=k8s.core.v1.ResourceRequirements(
+                                        requests={
+                                            "cpu":"1g",
+                                            "memory":"1g"
+                                        }
+                                      )
+                           ),
+                           # KDB container that serves/ broadcasts the incoming events
+                           # to the subscribers in the pod
+                           k8s.core.v1.ContainerArgs(
+                                    name="broadcaster",
                                     image='nginx',
                                     image_pull_policy="IfNotPresent",
                                     liveness_probe=core.v1.Probe(
