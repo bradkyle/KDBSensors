@@ -9,3 +9,19 @@ spec(
     channels=[],
     assets=[],
 )
+
+spec(
+    name='BitmexAuthWssSensor',
+    description="",
+    files=[],
+    channels=[],
+    assets=[],
+)
+
+spec(
+    name='BitmexAuthRestEffector',
+    description="",
+    files=[],
+    channels=[],
+    assets=[],
+)

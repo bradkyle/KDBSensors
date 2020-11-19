@@ -1,5 +1,4 @@
-
-
+import os
 import pulumi
 import pulumi_docker as docker
 import pulumi_gcp as gcp
@@ -15,79 +14,96 @@ class KDBIngestCanary(pulumi.ComponentResource):
         self.kafka_host = kafka_host
         self.kafka_port = kafka_port
         self.kafka_topic = kafka_topic
+        self.path = os.path.dirname(os.path.abspath(__file__))
+
+        producer_labels = {
+            "app": "producer",
+            "tier": "ingress",
+            "role": "master"
+        }
 
         self.producer_stub = ImageBuilder(
                name="canary_producer",
                base_image="kdb32",
+               prefix="producer",
+               path=self.path,
                files=[
                 "producer.q"
                ],
+               command="q producer.q -p 8080"
         )
 
-        self.producer_deployment = Deployment('kdb_ingest_canary_deployment',
-            spec=DeploymentSpecArgs(
-                # selector=LabelSelectorArgs(match_labels=labels),
+        self.producer_deployment = k8s.apps.v1.Deployment('producer_deployment',
+            spec=k8s.apps.v1.DeploymentSpecArgs(
+                selector=k8s.meta.v1.LabelSelectorArgs(match_labels=producer_labels),
                 replicas=1,
-                template=PodTemplateSpecArgs(
-                    # metadata=ObjectMetaArgs(labels=labels),
-                    spec=PodSpecArgs(containers=[
+                template=k8s.core.v1.PodTemplateSpecArgs(
+                    metadata=k8s.meta.v1.ObjectMetaArgs(labels=producer_labels),
+                    spec=k8s.core.v1.PodSpecArgs(containers=[
                             k8s.core.v1.ContainerArgs(
-                                    name="tickerplant",
+                                    name="producer",
                                     image=self.producer_stub.image.image_name,
                                     env=[
-                                        {"name":"KAFKA_HOST", "value":kafka_host},
-                                        {"name":"KAFKA_PORT", "value":kafka_port},
-                                        {"name":"KAFKA_TOPIC", "value":kafka_topic}
+                                        k8s.core.v1.EnvVarArgs(name="KAFKA_HOST", value=kafka_host),
+                                        k8s.core.v1.EnvVarArgs(name="KAFKA_PORT", value=kafka_port),
+                                        k8s.core.v1.EnvVarArgs(name="KAFKA_TOPIC", value=kafka_topic)
                                     ],
-                                    ports=[
-                                        {"container_port": 8080}
-                                    ],
-                                    volumeMounts=[],
-                                    resources=k8s.core.v1.ResourceRequirements(
+                                    ports=[k8s.core.v1.ContainerPortArgs(
+                                        container_port=8080,
+                                    )],
+                                    resources=k8s.core.v1.ResourceRequirementsArgs(
                                         requests={
-                                            "cpu":"1g",
-                                            "memory":"1g"
-                                        }
-                                      )
+                                            "cpu": "100m",
+                                            "memory": "100Mi",
+                                        },
+                                    ),
                            ),
                       ]),
                 ),
             ),
         )
 
+        consumer_labels = {
+            "app": "producer",
+            "tier": "ingress",
+            "role": "master"
+        }
+
         self.consumer_stub = ImageBuilder(
                name="canary_consumer",
                base_image="kdb32",
+               prefix="consumer",
+               path=self.path,
                files=[
                 "consumer.q"
                ],
+               command="q consumer.q -p 8080"
         )
 
-        self.consumer_deployment = Deployment('kdb_ingest_canary_deployment',
-            spec=DeploymentSpecArgs(
-                # selector=LabelSelectorArgs(match_labels=labels),
+        self.consumer_deployment = k8s.apps.v1.Deployment('consumer_deployment',
+            spec=k8s.apps.v1.DeploymentSpecArgs(
+                selector=k8s.meta.v1.LabelSelectorArgs(match_labels=consumer_labels),
                 replicas=1,
-                template=PodTemplateSpecArgs(
-                    # metadata=ObjectMetaArgs(labels=labels),
-                    spec=PodSpecArgs(containers=[
+                template=k8s.core.v1.PodTemplateSpecArgs(
+                    metadata=k8s.meta.v1.ObjectMetaArgs(labels=consumer_labels),
+                    spec=k8s.core.v1.PodSpecArgs(containers=[
                             k8s.core.v1.ContainerArgs(
-                                    name="tickerplant",
+                                    name="consumer",
                                     image=self.consumer_stub.image.image_name,
                                     env=[
-                                        {"name":"KAFKA_HOST", "value":kafka_host},
-                                        {"name":"KAFKA_PORT", "value":kafka_port},
-                                        {"name":"KAFKA_TOPIC", "value":kafka_topic}
+                                        k8s.core.v1.EnvVarArgs(name="KAFKA_HOST", value=kafka_host),
+                                        k8s.core.v1.EnvVarArgs(name="KAFKA_PORT", value=kafka_port),
+                                        k8s.core.v1.EnvVarArgs(name="KAFKA_TOPIC", value=kafka_topic)
                                     ],
-                                    ports=[
-                                        {"container_port": 8080}
-                                    ],
-                                    volumeMounts=[],
-                                    resources=k8s.core.v1.ResourceRequirements(
+                                    ports=[k8s.core.v1.ContainerPortArgs(
+                                        container_port=8080,
+                                    )],
+                                    resources=k8s.core.v1.ResourceRequirementsArgs(
                                         requests={
-                                            "cpu":"1g",
-                                            "memory":"1g"
-                                        }
-                                      )
+                                            "cpu": "100m",
+                                            "memory": "100Mi",
+                                        },
+                                    ),
                            ),
                       ]),
                 ),
