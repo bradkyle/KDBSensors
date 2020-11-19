@@ -1,144 +1,144 @@
-from clients.registration import registry, register, make, spec
+# from clients.registration import registry, register, make, spec
 
-# binance  
-#--------------------------------------------> 
+## binance  
+##--------------------------------------------> 
 
-register(
-    id='BinanceWssSensor',
-    entry_point='beast.clients.binance:BinanceWssSensor',
-)
+#register(
+#    id='BinanceWssSensor',
+#    entry_point='beast.clients.binance:BinanceWssSensor',
+#)
 
-register(
-    id='BinanceAuthWssSensor',
-    entry_point='beast.clients.binance:BinanceWssSensor',
-)
+#register(
+#    id='BinanceAuthWssSensor',
+#    entry_point='beast.clients.binance:BinanceWssSensor',
+#)
 
-register(
-    id='BinanceFuturesWssSensor',
-    entry_point='beast.clients.binance:BinanceFuturesWssSensor',
-)
+#register(
+#    id='BinanceFuturesWssSensor',
+#    entry_point='beast.clients.binance:BinanceFuturesWssSensor',
+#)
 
-register(
-    id='BinanceAuthFuturesWssSensor',
-    entry_point='beast.clients.binance:BinanceFuturesWssSensor',
-)
+#register(
+#    id='BinanceAuthFuturesWssSensor',
+#    entry_point='beast.clients.binance:BinanceFuturesWssSensor',
+#)
 
-register(
-    id='BinanceFuturesCronSensor',
-    entry_point='beast.clients.binance:BinanceFuturesCronSensor',
-)
+#register(
+#    id='BinanceFuturesCronSensor',
+#    entry_point='beast.clients.binance:BinanceFuturesCronSensor',
+#)
 
-register(
-    id='BinanceEffector',
-    entry_point='beast.clients.binance:BinanceEffector',
-)
+#register(
+#    id='BinanceEffector',
+#    entry_point='beast.clients.binance:BinanceEffector',
+#)
 
-register(
-    id='BinanceFuturesEffector',
-    entry_point='beast.clients.binance:BinanceFuturesEffector',
-)
+#register(
+#    id='BinanceFuturesEffector',
+#    entry_point='beast.clients.binance:BinanceFuturesEffector',
+#)
 
 
-# bitmex 
-#--------------------------------------------> 
+## bitmex 
+##--------------------------------------------> 
 
-register(
-    id='BitmexWssSensor',
-    entry_point='beast.clients.bitmex:BitmexWssSensor',
-)
+#register(
+#    id='BitmexWssSensor',
+#    entry_point='beast.clients.bitmex:BitmexWssSensor',
+#)
 
-register(
-    id='BitmexAuthWssSensor',
-    entry_point='beast.clients.bitmex:BitmexAuthWssSensor',
-)
+#register(
+#    id='BitmexAuthWssSensor',
+#    entry_point='beast.clients.bitmex:BitmexAuthWssSensor',
+#)
 
-register(
-    id='BitmexEffector',
-    entry_point='beast.clients.bitmex:BitmexEffector',
-)
+#register(
+#    id='BitmexEffector',
+#    entry_point='beast.clients.bitmex:BitmexEffector',
+#)
 
-# okex 
-#--------------------------------------------> 
+## okex 
+##--------------------------------------------> 
 
-register(
-    id='BinanceWssSensor',
-    entry_point='beast.clients.binance:BinanceWssSensor',
-)
+#register(
+#    id='BinanceWssSensor',
+#    entry_point='beast.clients.binance:BinanceWssSensor',
+#)
 
-register(
-    id='BinanceAuthWssSensor',
-    entry_point='beast.clients.binance:BinanceWssSensor',
-)
+#register(
+#    id='BinanceAuthWssSensor',
+#    entry_point='beast.clients.binance:BinanceWssSensor',
+#)
 
-register(
-    id='BinanceFuturesWssSensor',
-    entry_point='beast.clients.binance:BinanceFuturesWssSensor',
-)
+#register(
+#    id='BinanceFuturesWssSensor',
+#    entry_point='beast.clients.binance:BinanceFuturesWssSensor',
+#)
 
-register(
-    id='BinanceAuthFuturesWssSensor',
-    entry_point='beast.clients.binance:BinanceFuturesWssSensor',
-)
+#register(
+#    id='BinanceAuthFuturesWssSensor',
+#    entry_point='beast.clients.binance:BinanceFuturesWssSensor',
+#)
 
-register(
-    id='BinanceFuturesCronSensor',
-    entry_point='beast.clients.binance:BinanceFuturesCronSensor',
-)
+#register(
+#    id='BinanceFuturesCronSensor',
+#    entry_point='beast.clients.binance:BinanceFuturesCronSensor',
+#)
 
-register(
-    id='BinanceEffector',
-    entry_point='beast.clients.binance:BinanceEffector',
-)
+#register(
+#    id='BinanceEffector',
+#    entry_point='beast.clients.binance:BinanceEffector',
+#)
 
-register(
-    id='BinanceFuturesEffector',
-    entry_point='beast.clients.binance:BinanceFuturesEffector',
-)
+#register(
+#    id='BinanceFuturesEffector',
+#    entry_point='beast.clients.binance:BinanceFuturesEffector',
+#)
 
-# coinbase 
-#--------------------------------------------> 
+## coinbase 
+##--------------------------------------------> 
 
-# huobi 
-#--------------------------------------------> 
+## huobi 
+##--------------------------------------------> 
 
-# twitter 
-#--------------------------------------------> 
+## twitter 
+##--------------------------------------------> 
 
-# interactive brokers 
-#--------------------------------------------> 
+## interactive brokers 
+##--------------------------------------------> 
 
-# iqfeed 
-#--------------------------------------------> 
+## iqfeed 
+##--------------------------------------------> 
 
-# rss 
-#--------------------------------------------> 
+## rss 
+##--------------------------------------------> 
 
-# betfair 
-#--------------------------------------------> 
+## betfair 
+##--------------------------------------------> 
 
-# polygon 
-#--------------------------------------------> 
+## polygon 
+##--------------------------------------------> 
 
-# youtube 
-#--------------------------------------------> 
+## youtube 
+##--------------------------------------------> 
 
-# pushshift 
-#--------------------------------------------> 
+## pushshift 
+##--------------------------------------------> 
 
-# tradingview 
-#--------------------------------------------> 
+## tradingview 
+##--------------------------------------------> 
 
-# bloomberg 
-#--------------------------------------------> 
+## bloomberg 
+##--------------------------------------------> 
 
-# okcoin 
-#--------------------------------------------> 
+## okcoin 
+##--------------------------------------------> 
 
-# kraken 
-#--------------------------------------------> 
+## kraken 
+##--------------------------------------------> 
 
-# deribit 
-#--------------------------------------------> 
+## deribit 
+##--------------------------------------------> 
 
-# robinhood 
-#--------------------------------------------> 
+## robinhood 
+##--------------------------------------------> 

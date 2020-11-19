@@ -18,11 +18,11 @@ events_topic = kafka.add_topic("events");
 # AuthSensors and Effectors 
 #--------------------------------------------> 
 
-# ingest = KDBIngestCanary(
-#     kafka_host="",
-#     kafka_port="",
-#     kafka_topic=""
-# )
+ingest = KDBIngestCanary(
+    kafka_host=kafka.host,
+    kafka_port=kafka.port,
+    kafka_topic=events_topic
+)
 
 # Binance Futures 
 # beast.client.make()

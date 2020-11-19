@@ -41,16 +41,16 @@
 		};
 
 .sensor.authwss.init :{
-				.sensor.wss[]
-				};
+		.sensor.wss[]
+		};
 
 .sensor.cron.init :{
 
-				};
+		};
 
 .sensor.authcron.init :{
 
-				};
+		};
 
 
 .sensor.handlers:();

@@ -2,7 +2,10 @@
 # TODO bitmex cron agent
 # TODO bitmex effectors
 
-class BitmexSensor(KDBSensor):
-    def __init__(self):
-        pass
-
+spec(
+    name='BitmexWssSensor',
+    description="",
+    files=[],
+    channels=[],
+    assets=[],
+)
