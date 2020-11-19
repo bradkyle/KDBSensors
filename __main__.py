@@ -5,7 +5,7 @@ from pulumi_gcp import storage
 # from sensors import KDBSensorRegistry
 # from monitoring.monitoring import MonitoringCluster
 from infra.kafka import StrimziKafkaOperator
-from ingest import KDBIngestCanary
+from test.kafka import KDBIngestCanary
 config = pulumi.Config()
 # isMinikube = config.get_bool("isMinikube")
 

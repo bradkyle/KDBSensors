@@ -1,4 +1,5 @@
 
+
 class DockerFileBuilder():
     def __init__(
           self,
@@ -18,3 +19,6 @@ class DockerFileBuilder():
     def clean(self):
         pass
 
+class ImageBuilder(object):
+    def __init__(self, base_image):
+        pass
