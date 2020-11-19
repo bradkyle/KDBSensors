@@ -4,6 +4,7 @@ import pulumi
 import pulumi_docker as docker
 import pulumi_gcp as gcp
 import pulumi_kubernetes as k8s
+from infra.docker import ImageBuilder
 
 class KDBIngestCanary(pulumi.ComponentResource):
     """
@@ -32,15 +33,7 @@ class KDBIngestCanary(pulumi.ComponentResource):
                     spec=PodSpecArgs(containers=[
                             k8s.core.v1.ContainerArgs(
                                     name="tickerplant",
-                                    image='nginx',
-                                    # liveness_probe=core.v1.Probe(
-                                    #     exec="",
-                                    #     failureThreshold=3
-                                    # ),
-                                    # redinessProbe=core.v1.Probe(
-                                    #     exec="",
-                                    #     failureThreshold=3,
-                                    # ),
+                                    image=self.producer_stub.image.image_name,
                                     env=[
                                         {"name":"KAFKA_HOST", "value":kafka_host},
                                         {"name":"KAFKA_PORT", "value":kafka_port},
@@ -79,15 +72,7 @@ class KDBIngestCanary(pulumi.ComponentResource):
                     spec=PodSpecArgs(containers=[
                             k8s.core.v1.ContainerArgs(
                                     name="tickerplant",
-                                    image='nginx',
-                                    # liveness_probe=core.v1.Probe(
-                                    #     exec="",
-                                    #     failureThreshold=3
-                                    # ),
-                                    # redinessProbe=core.v1.Probe(
-                                    #     exec="",
-                                    #     failureThreshold=3,
-                                    # ),
+                                    image=self.consumer_stub.image.image_name,
                                     env=[
                                         {"name":"KAFKA_HOST", "value":kafka_host},
                                         {"name":"KAFKA_PORT", "value":kafka_port},

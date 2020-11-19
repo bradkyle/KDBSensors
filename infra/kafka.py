@@ -10,6 +10,10 @@ class StrimziKafkaOperator(pulumi.ComponentResource):
     def __init__(self, k8s_provider):
         self.k8s_provider = k8s_provider
         self.topics = {}
+
+        self.host="strimzi-cluster-kafka-bootstrap"
+        self.port=9092
+
         self.chart = k8s.helm.v3.Chart(
             "strimzi",
             k8s.helm.v3.ChartOpts( # TODO add bitnami/grafana
