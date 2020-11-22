@@ -9,13 +9,19 @@ BeastCore	core/__init__.py	/^class BeastCore():$/;"	c
 Bool	notebooks/q/kxpy/kx_comm.py	/^from traitlets import Instance, Unicode, Bytes, Bool, Dict, Any, default$/;"	i
 Bytes	notebooks/q/kxpy/kx_comm.py	/^from traitlets import Instance, Unicode, Bytes, Bool, Dict, Any, default$/;"	i
 Comm	notebooks/q/kxpy/kx_comm.py	/^class Comm(IPythonComm):$/;"	c
+Config	clients/core.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 Config	infra/monitoring.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
+Config	test/sensor/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
+DVCData	infra/dvc.py	/^class DVCData():$/;"	c
+DVCFlow	infra/dvc.py	/^class DVCFlow():$/;"	c
+DVCModel	infra/dvc.py	/^class DVCModel():$/;"	c
 Dict	notebooks/q/kxpy/kx_comm.py	/^from traitlets import Instance, Unicode, Bytes, Bool, Dict, Any, default$/;"	i
 DisplayFormatter	notebooks/q/kxpy/kx_backend_inline.py	/^from IPython.core.formatters import DisplayFormatter $/;"	i
 DockerBuild	clients/core.py	/^from pulumi_docker import Image, DockerBuild$/;"	i
 DockerFileBuilder	infra/docker.py	/^class DockerFileBuilder():$/;"	c
 FigureCanvas	notebooks/q/kxpy/kx_backend_inline.py	/^FigureCanvas = FigureCanvasAgg$/;"	v
 FigureCanvasAgg	notebooks/q/kxpy/kx_backend_inline.py	/^from matplotlib.backends.backend_agg import new_figure_manager, FigureCanvasAgg # analysis: ignore$/;"	i
+FileBuilder	infra/filegen.py	/^class FileBuilder():$/;"	c
 Gcf	notebooks/q/kxpy/kx_backend_inline.py	/^from matplotlib._pylab_helpers import Gcf$/;"	i
 IPython	notebooks/q/kxpy/kx_backend_inline.py	/^import IPython$/;"	i
 IPython	notebooks/q/kxpy/kx_backend_inline.py	/^import IPython.core.display$/;"	i
@@ -24,40 +30,53 @@ IPythonComm	notebooks/q/kxpy/kx_comm.py	/^from ipykernel.comm import Comm as IPy
 Image	clients/core.py	/^from pulumi_docker import Image, DockerBuild$/;"	i
 ImageBuilder	infra/docker.py	/^class ImageBuilder(DockerFileBuilder):$/;"	c
 ImageBuilder	test/kafka/__init__.py	/^from infra.docker import ImageBuilder$/;"	i
+ImageBuilder	test/sensor/__init__.py	/^from infra.docker import ImageBuilder$/;"	i
 InlineBackend	notebooks/q/kxpy/kx_backend_inline.py	/^from ipykernel.pylab.config import InlineBackend$/;"	i
 Instance	notebooks/q/kxpy/kx_comm.py	/^from traitlets import Instance, Unicode, Bytes, Bool, Dict, Any, default$/;"	i
-KDBIngestCanary	__main__.py	/^from test.kafka import KDBIngestCanary$/;"	i
+KDBFullSensor	__main__.py	/^from test.sensor import KDBFullSensor$/;"	i
+KDBFullSensor	clients/core.py	/^class KDBFullSensor(pulumi.ComponentResource):$/;"	c
+KDBFullSensor	test/sensor/__init__.py	/^class KDBFullSensor(pulumi.ComponentResource):$/;"	c
+KDBIngest	ingest/__init__.py	/^class KDBIngest(pulumi.ComponentResource):$/;"	c
 KDBIngestCanary	test/kafka/__init__.py	/^class KDBIngestCanary(pulumi.ComponentResource):$/;"	c
-KDBSensor	clients/core.py	/^class KDBSensor(pulumi.ComponentResource):$/;"	c
-KDBSensorArgs	clients/core.py	/^class KDBSensorArgs:$/;"	c
 KDBSensorRegistry	clients/register.py	/^class KDBSensorRegistry(pulumi.ComponentResource):$/;"	c
 KxComm	notebooks/q/kxpy/kx_backend_inline.py	/^  from kxpy.kx_comm import Comm as KxComm$/;"	i
 List	infra/monitoring.py	/^from typing import Mapping, Sequence, List$/;"	i
 LoggingConfigurable	notebooks/q/kxpy/kx_comm.py	/^from traitlets.config import LoggingConfigurable$/;"	i
 Mapping	infra/monitoring.py	/^from typing import Mapping, Sequence, List$/;"	i
+Mapping	test/sensor/__init__.py	/^from typing import Mapping, Sequence$/;"	i
 MonitoringCluster	infra/monitoring.py	/^class MonitoringCluster(pulumi.ComponentResource):$/;"	c
+Output	clients/core.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 Output	infra/monitoring.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
+Output	test/sensor/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 RandomPassword	infra/monitoring.py	/^from pulumi_random import RandomPassword$/;"	i
+ResourceOptions	clients/core.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 ResourceOptions	infra/monitoring.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 ResourceOptions	infra/monitoring.py	/^from pulumi import get_stack, ResourceOptions, StackReference$/;"	i
+ResourceOptions	test/sensor/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 Sequence	infra/monitoring.py	/^from typing import Mapping, Sequence, List$/;"	i
+Sequence	test/sensor/__init__.py	/^from typing import Mapping, Sequence$/;"	i
 StackReference	infra/monitoring.py	/^from pulumi import get_stack, ResourceOptions, StackReference$/;"	i
 StrimziKafkaOperator	__main__.py	/^from infra.kafka import StrimziKafkaOperator$/;"	i
 StrimziKafkaOperator	infra/kafka.py	/^class StrimziKafkaOperator(pulumi.ComponentResource):$/;"	c
 Unicode	notebooks/q/kxpy/kx_comm.py	/^from traitlets import Instance, Unicode, Bytes, Bool, Dict, Any, default$/;"	i
 __all__	notebooks/q/kxpy/kx_comm.py	/^__all__ = ['Comm']$/;"	v
 __del__	notebooks/q/kxpy/kx_comm.py	/^    def __del__(self):$/;"	m	class:Comm	file:
-__init__	clients/core.py	/^      def __init__(self,$/;"	m	class:KDBSensor
-__init__	clients/core.py	/^    def __init__(self,$/;"	m	class:KDBSensorArgs
+__init__	clients/core.py	/^    def __init__(self):$/;"	m	class:KDBFullSensor
 __init__	clients/register.py	/^    def __init__(self, kafka_ingest, monitoring_cluster, use_ingress_kafka):$/;"	m	class:KDBSensorRegistry
 __init__	core/__init__.py	/^    def __init__(self):$/;"	m	class:BeastCore
 __init__	infra/docker.py	/^    def __init__($/;"	m	class:DockerFileBuilder
 __init__	infra/docker.py	/^    def __init__($/;"	m	class:ImageBuilder
+__init__	infra/dvc.py	/^    def __init__(self):$/;"	m	class:DVCData
+__init__	infra/dvc.py	/^    def __init__(self):$/;"	m	class:DVCFlow
+__init__	infra/dvc.py	/^    def __init__(self):$/;"	m	class:DVCModel
+__init__	infra/filegen.py	/^    def __init__($/;"	m	class:FileBuilder
 __init__	infra/kafka.py	/^    def __init__(self, k8s_provider):$/;"	m	class:StrimziKafkaOperator
 __init__	infra/monitoring.py	/^    def __init__(self):$/;"	m	class:MonitoringCluster
+__init__	ingest/__init__.py	/^    def __init__($/;"	m	class:KDBIngest
 __init__	notebooks/q/kxpy/kx_backend_inline.py	/^ def __init__(self,df=None):$/;"	m	class:qshell
 __init__	notebooks/q/kxpy/kx_comm.py	/^    def __init__(self, target_name='', data=None, metadata=None, buffers=None, **kwargs):$/;"	m	class:Comm
 __init__	test/kafka/__init__.py	/^    def __init__(self, kafka_host, kafka_port, kafka_topic):$/;"	m	class:KDBIngestCanary
+__init__	test/sensor/__init__.py	/^    def __init__(self,$/;"	m	class:KDBFullSensor
 _close_callback	notebooks/q/kxpy/kx_comm.py	/^    _close_callback = Any()$/;"	v	class:Comm
 _close_data	notebooks/q/kxpy/kx_comm.py	/^    _close_data = Dict(help="data dict, if any, to be included in comm_close")$/;"	v	class:Comm
 _closed	notebooks/q/kxpy/kx_comm.py	/^    _closed = Bool(True)$/;"	v	class:Comm
@@ -74,8 +93,8 @@ add_service_monitor	infra/monitoring.py	/^    def add_service_monitor(self, name
 add_topic	infra/kafka.py	/^    def add_topic(self, name):$/;"	m	class:StrimziKafkaOperator
 assets	clients/bitmex/__init__.py	/^    assets=[],$/;"	v
 backend_nbagg	notebooks/q/kxpy/kx_backend_inline.py	/^  from matplotlib.backends import backend_nbagg$/;"	i
-canary	__main__.py	/^canary = KDBIngestCanary($/;"	v
 channels	clients/bitmex/__init__.py	/^    channels=[],$/;"	v
+clean	test/sensor/__init__.py	/^    def clean(self):$/;"	m	class:KDBFullSensor
 clear_output	notebooks/q/kxpy/kx_backend_inline.py	/^def clear_output(wait=False):$/;"	f
 close	notebooks/q/kxpy/kx_comm.py	/^    def close(self, data=None, metadata=None, buffers=None):$/;"	m	class:Comm
 comm_id	notebooks/q/kxpy/kx_comm.py	/^    comm_id = Unicode()$/;"	v	class:Comm
@@ -92,6 +111,7 @@ docker	infra/docker.py	/^import pulumi_docker as docker$/;"	i
 docker	infra/kafka.py	/^import pulumi_docker as docker$/;"	i
 docker	infra/monitoring.py	/^import pulumi_docker as docker$/;"	i
 docker	test/kafka/__init__.py	/^import pulumi_docker as docker$/;"	i
+docker	test/sensor/__init__.py	/^import pulumi_docker as docker$/;"	i
 draw_if_interactive	notebooks/q/kxpy/kx_backend_inline.py	/^def draw_if_interactive():$/;"	f
 entry_point	clients/binance/__init__.py	/^    entry_point='beast.clients.binance:BinanceEffector',$/;"	v
 entry_point	clients/binance/__init__.py	/^    entry_point='beast.clients.binance:BinanceFuturesCronSensor',$/;"	v
@@ -99,17 +119,24 @@ entry_point	clients/binance/__init__.py	/^    entry_point='beast.clients.binance
 entry_point	clients/binance/__init__.py	/^    entry_point='beast.clients.binance:BinanceFuturesWssSensor',$/;"	v
 entry_point	clients/binance/__init__.py	/^    entry_point='beast.clients.binance:BinanceWssSensor',$/;"	v
 events_topic	__main__.py	/^events_topic = kafka.add_topic("events");$/;"	v
+export	clients/core.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 export	infra/monitoring.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
+export	test/sensor/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 files	clients/bitmex/__init__.py	/^    files=[],$/;"	v
 flush_figures	notebooks/q/kxpy/kx_backend_inline.py	/^def flush_figures():$/;"	f
 forward	core/model/model.cpp	/^				K forward(K obs) {$/;"	f
 gcp	infra/kafka.py	/^import pulumi_gcp as gcp$/;"	i
 gcp	infra/monitoring.py	/^import pulumi_gcp as gcp$/;"	i
 gcp	test/kafka/__init__.py	/^import pulumi_gcp as gcp$/;"	i
+gcp	test/sensor/__init__.py	/^import pulumi_gcp as gcp$/;"	i
 get_ipython	notebooks/q/kxpy/kx_backend_inline.py	/^def get_ipython():$/;"	f
+get_project	clients/core.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 get_project	infra/monitoring.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
+get_project	test/sensor/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
+get_stack	clients/core.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 get_stack	infra/monitoring.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 get_stack	infra/monitoring.py	/^from pulumi import get_stack, ResourceOptions, StackReference$/;"	i
+get_stack	test/sensor/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 handle_close	notebooks/q/kxpy/kx_comm.py	/^    def handle_close(self, msg):$/;"	m	class:Comm
 handle_msg	notebooks/q/kxpy/kx_comm.py	/^    def handle_msg(self, msg):$/;"	m	class:Comm
 init	core/model/model.cpp	/^				K init(K pth) {$/;"	f
@@ -120,10 +147,8 @@ json_clean	notebooks/q/kxpy/kx_comm.py	/^from ipykernel.jsonutil import json_cle
 k8s	infra/kafka.py	/^import pulumi_kubernetes as k8s$/;"	i
 k8s	infra/monitoring.py	/^import pulumi_kubernetes as k8s$/;"	i
 k8s	test/kafka/__init__.py	/^import pulumi_kubernetes as k8s$/;"	i
+k8s	test/sensor/__init__.py	/^import pulumi_kubernetes as k8s$/;"	i
 kafka	__main__.py	/^kafka = StrimziKafkaOperator(k8s_provider=None)$/;"	v
-kafka_host	__main__.py	/^    kafka_host=kafka.host,$/;"	v
-kafka_port	__main__.py	/^    kafka_port=kafka.port,$/;"	v
-kafka_topic	__main__.py	/^    kafka_topic="events"$/;"	v
 kernel	notebooks/q/kxpy/kx_comm.py	/^    kernel = True$/;"	v	class:Comm
 kind	clients/binance/__init__.py	/^    kind="",$/;"	v
 matplotlib	notebooks/q/kxpy/kx_backend_inline.py	/^  import matplotlib.pyplot as plt$/;"	i
@@ -144,9 +169,13 @@ on_close	notebooks/q/kxpy/kx_comm.py	/^    def on_close(self, callback):$/;"	m	c
 on_msg	notebooks/q/kxpy/kx_comm.py	/^    def on_msg(self, callback):$/;"	m	class:Comm
 open	notebooks/q/kxpy/kx_comm.py	/^    def open(self, data=None, metadata=None, buffers=None):$/;"	m	class:Comm
 os	infra/docker.py	/^import os$/;"	i
+os	infra/filegen.py	/^import os$/;"	i
 os	test/kafka/__init__.py	/^import os$/;"	i
+os	test/sensor/__init__.py	/^import os$/;"	i
 pathlib	infra/docker.py	/^import pathlib$/;"	i
+pathlib	infra/filegen.py	/^import pathlib$/;"	i
 plt	notebooks/q/kxpy/kx_backend_inline.py	/^  import matplotlib.pyplot as plt$/;"	i
+prand	test/sensor/__init__.py	/^import pulumi_random as prand$/;"	i
 primary	notebooks/q/kxpy/kx_comm.py	/^    primary = Bool(True, help="Am I the primary or secondary Comm?")$/;"	v	class:Comm
 print_function	notebooks/q/kxpy/kx_backend_inline.py	/^from __future__ import print_function$/;"	i
 pulumi	__main__.py	/^import pulumi$/;"	i
@@ -155,6 +184,7 @@ pulumi	infra/docker.py	/^import pulumi$/;"	i
 pulumi	infra/kafka.py	/^import pulumi$/;"	i
 pulumi	infra/monitoring.py	/^import pulumi$/;"	i
 pulumi	test/kafka/__init__.py	/^import pulumi$/;"	i
+pulumi	test/sensor/__init__.py	/^import pulumi$/;"	i
 qclearcallback	notebooks/q/kxpy/kx_backend_inline.py	/^qclearcallback=None$/;"	v
 qfunc	notebooks/q/kxpy/kx_comm.py	/^    qfunc=None $/;"	v	class:Comm
 qipythoncallback	notebooks/q/kxpy/kx_backend_inline.py	/^qipythoncallback=None$/;"	v
@@ -165,6 +195,7 @@ qshell	notebooks/q/kxpy/kx_backend_inline.py	/^class qshell():$/;"	c
 rc	notebooks/q/kxpy/kx_backend_inline.py	/^  from matplotlib import rc$/;"	i
 select_figure_formats	notebooks/q/kxpy/kx_backend_inline.py	/^from IPython.core.pylabtools import select_figure_formats$/;"	i
 send	notebooks/q/kxpy/kx_comm.py	/^    def send(self, data=None, metadata=None, buffers=None):$/;"	m	class:Comm
+sensor	__main__.py	/^sensor = KDBFullSensor()$/;"	v
 shell	notebooks/q/kxpy/kx_backend_inline.py	/^shell=qshell(df)$/;"	v
 show	notebooks/q/kxpy/kx_backend_inline.py	/^def show(close=None, block=None):$/;"	f
 storage	__main__.py	/^from pulumi_gcp import storage$/;"	i

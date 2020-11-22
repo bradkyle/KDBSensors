@@ -1,6 +1,12 @@
+import os
 import pulumi
-from pulumi_docker import Image, DockerBuild
+import pulumi_docker as docker
+import pulumi_gcp as gcp
+import pulumi_kubernetes as k8s
+from infra.docker import ImageBuilder
 from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions
+import pulumi_random as prand
+from typing import Mapping, Sequence
 
 # https://github.com/weaveworks/grafanalib
 # Used for building grafana dashboards dynamically
@@ -11,16 +17,17 @@ from grafanalib.core import (
 )
 
 class KDBFullSensor(pulumi.ComponentResource):
-    def __init__(self):
-        self.kafka_host = kafka_host
-        self.kafka_port = kafka_port
-        self.kafka_topic = kafka_topic
+    def __init__(self,
+                 name:str = "bam",
+                 opts:pulumi.ResourceOptions = None):
+        super().__init__('KDBFullSensor', name, None, opts)
         self.path = os.path.dirname(os.path.abspath(__file__))
+        self.stubs = []
+        self.name = name
 
-        self.tp_user = 0;
-        self.tp_pass = 0;
-        self.tp_host = 0;
-        self.tp_port = 0;
+        self.tp_user = prand.RandomString("tp_user-"+self.name,length=10,special=False);
+        self.tp_pass = prand.RandomPassword("tp_pass-"+self.name,length=16,special=True);
+        self.tp_port = 5000;
 
         # The sensor can be of any image format
         # which would allow for the tickerplant and
@@ -41,6 +48,7 @@ class KDBFullSensor(pulumi.ComponentResource):
                ],
                command="q producer.q -p 8080"
         )
+        self.stubs.append(self.sensor_stub)
 
         # The tickerplant listens to updates recieved from the
         # the sensor and dispatches them to the hdb worker and
@@ -61,6 +69,7 @@ class KDBFullSensor(pulumi.ComponentResource):
                ],
                command="q tick.q"
         )
+        self.stubs.append(self.tp_stub)
 
         # The hdb receives events from the tickerplant, batches them
         # and writes them to persistent store, if there are older stores
@@ -81,27 +90,28 @@ class KDBFullSensor(pulumi.ComponentResource):
                ],
                command="q hdb.q"
         )
+        self.stubs.append(self.hdb_stub)
 
         # Using a stateful set per sensor allows for logical replcation
-        labels = { 'app': 'sensor-{0}-{1}'.format(get_project(), get_stack()) }
-        self.tp_deployment = k8s.apps.v1.StatefulSet("sensor-deployment-"+str(i),
+        labels = { 'app': self.name+'-sensor-{0}-{1}'.format(get_project(), get_stack()) }
+        self.tp_deployment = k8s.apps.v1.StatefulSet("sensor-deployment-"+self.name,
             spec=k8s.apps.v1.StatefulSetSpecArgs(
                 selector=k8s.meta.v1.LabelSelectorArgs(match_labels=labels),
+                service_name=self.name+"-sensor-service",
                 replicas=1,
                 template=k8s.core.v1.PodTemplateSpecArgs(
                     metadata=k8s.meta.v1.ObjectMetaArgs(labels=labels),
                     spec=k8s.core.v1.PodSpecArgs(containers=[
                           k8s.core.v1.ContainerArgs(
                                 name=self.name+"-sensor",
-                                image=self.sensor_stub.image,
+                                image=self.sensor_stub.image.image_name,
                                 image_pull_policy="IfNotPresent",
                                 env=[
                                     k8s.core.v1.EnvVarArgs(name="SENSOR_NAME", value=self.name),
-                                    k8s.core.v1.EnvVarArgs(name="CONF_FILE", value=kafka_host),
-                                    k8s.core.v1.EnvVarArgs(name="TP_PORT", value=kafka_port),
-                                    k8s.core.v1.EnvVarArgs(name="TP_HOST", value=kafka_port),
-                                    k8s.core.v1.EnvVarArgs(name="USER", value=kafka_port),
-                                    k8s.core.v1.EnvVarArgs(name="PASS", value=kafka_port)
+                                    k8s.core.v1.EnvVarArgs(name="TP_PORT", value=self.tp_port),
+                                    k8s.core.v1.EnvVarArgs(name="TP_HOST", value="localhost"),
+                                    k8s.core.v1.EnvVarArgs(name="TP_USER", value=self.tp_user),
+                                    k8s.core.v1.EnvVarArgs(name="TP_PASS", value=self.tp_pass)
                                 ],
                                 ports=[
                                       k8s.core.v1.ContainerPortArgs(container_port=8080)
@@ -115,16 +125,16 @@ class KDBFullSensor(pulumi.ComponentResource):
                           ),
                           k8s.core.v1.ContainerArgs(
                                 name=self.name+"-tickerplant",
-                                image=self.tp_stub.image,
+                                image=self.tp_stub.image.image_name,
                                 image_pull_policy="IfNotPresent",
                                 env=[
-                                    k8s.core.v1.EnvVarArgs(name="TP_PORT", value=kafka_port),
-                                    k8s.core.v1.EnvVarArgs(name="TP_HOST", value=kafka_port),
-                                    k8s.core.v1.EnvVarArgs(name="USER", value=self.username),
-                                    k8s.core.v1.EnvVarArgs(name="PASS", value=self.password)
+                                    k8s.core.v1.EnvVarArgs(name="TP_PORT", value=self.tp_port),
+                                    k8s.core.v1.EnvVarArgs(name="TP_HOST", value="localhost"),
+                                    k8s.core.v1.EnvVarArgs(name="TP_USER", value=self.tp_user),
+                                    k8s.core.v1.EnvVarArgs(name="TP_PASS", value=self.tp_pass)
                                 ],
                                 ports=[
-                                      k8s.core.v1.ContainerPortArgs(container_port=8081)
+                                      k8s.core.v1.ContainerPortArgs(container_port=8081),
                                       k8s.core.v1.ContainerPortArgs(container_port=self.tp_port)
                                 ],
                                 resources=k8s.core.v1.ResourceRequirementsArgs(
@@ -138,12 +148,11 @@ class KDBFullSensor(pulumi.ComponentResource):
                                 name=self.name+"-hdb",
                                 image=self.hdb_stub.image.image_name,
                                 image_pull_policy="IfNotPresent",
-                                env=
-                                    k8s.core.v1.EnvVarArgs(name="CONF_FILE", value=kafka_host),
-                                    k8s.core.v1.EnvVarArgs(name="TP_PORT", value=kafka_port),
-                                    k8s.core.v1.EnvVarArgs(name="TP_HOST", value=kafka_port),
-                                    k8s.core.v1.EnvVarArgs(name="USER", value=self.username),
-                                    k8s.core.v1.EnvVarArgs(name="PASS", value=self.password)
+                                env=[
+                                    k8s.core.v1.EnvVarArgs(name="TP_PORT", value=self.tp_port),
+                                    k8s.core.v1.EnvVarArgs(name="TP_HOST", value="localhost"),
+                                    k8s.core.v1.EnvVarArgs(name="TP_USER", value=self.tp_user),
+                                    k8s.core.v1.EnvVarArgs(name="TP_PASS", value=self.tp_pass)
                                 ],
                                 ports=[
                                       k8s.core.v1.ContainerPortArgs(container_port=8082)
@@ -157,7 +166,8 @@ class KDBFullSensor(pulumi.ComponentResource):
                           )
                       ]),
                 ),
-            ), __opts__=ResourceOptions(provider=self.k8s_provider))
+
+            ))
 
         # // allow external aggregators to subscribe to the tickerplant
         self.tp_service = k8s.core.v1.Service("tickerplant-service-"+self.name,
@@ -165,10 +175,60 @@ class KDBFullSensor(pulumi.ComponentResource):
                     type='LoadBalancer',
                     selector=labels,
                     ports=[k8s.core.v1.ServicePortArgs(port=self.tp_port)],
-                ), __opts__=ResourceOptions(provider=self.k8s_provider))
+        ))
+
+        self.rdb_labels = {
+            "app": "rdb",
+            "tier": "aggregation",
+            "role": "master"
+        }
+
+        self.rdb_stub = ImageBuilder(
+               name="rdb",
+               base_image="kdb32",
+               prefix="rdb",
+               path=self.path,
+               files=[
+                "rdb.q"
+               ],
+               command="q rdb.q"
+        )
+        self.stubs.append(self.rdb_stub)
+
+        self.rdb_deployment = k8s.apps.v1.Deployment('rdb-deployment-'+self.name,
+            spec=k8s.apps.v1.DeploymentSpecArgs(
+                selector=k8s.meta.v1.LabelSelectorArgs(match_labels=self.rdb_labels),
+                replicas=1,
+                template=k8s.core.v1.PodTemplateSpecArgs(
+                    metadata=k8s.meta.v1.ObjectMetaArgs(labels=self.rdb_labels),
+                    spec=k8s.core.v1.PodSpecArgs(containers=[
+                            k8s.core.v1.ContainerArgs(
+                                    name=self.name+"-hdb",
+                                    image=self.rdb_stub.image.image_name,
+                                    env=[
+                                        k8s.core.v1.EnvVarArgs(name="TP_PORT", value=self.tp_port),
+                                        k8s.core.v1.EnvVarArgs(name="TP_HOST", value=""),
+                                        k8s.core.v1.EnvVarArgs(name="TP_USER", value=self.tp_user),
+                                        k8s.core.v1.EnvVarArgs(name="TP_PASS", value=self.tp_pass)
+                                    ],
+                                    ports=[k8s.core.v1.ContainerPortArgs(
+                                        container_port=8080,
+                                    )],
+                                    resources=k8s.core.v1.ResourceRequirementsArgs(
+                                        requests={
+                                            "cpu": "100m",
+                                            "memory": "1Gi",
+                                        },
+                                    ),
+                           ),
+                      ]),
+                ),
+            ),
+        )
 
 
-
-
+    def clean(self):
+        for s in self.stubs:
+            print(s.dockerfile_path)
 
 

@@ -5,7 +5,7 @@ from pulumi_gcp import storage
 # from sensors import KDBSensorRegistry
 # from monitoring.monitoring import MonitoringCluster
 from infra.kafka import StrimziKafkaOperator
-from test.kafka import KDBIngestCanary
+from test.sensor import KDBFullSensor
 config = pulumi.Config()
 # isMinikube = config.get_bool("isMinikube")
 
@@ -18,12 +18,7 @@ events_topic = kafka.add_topic("events");
 # AuthSensors and Effectors 
 #--------------------------------------------> 
 
-canary = KDBIngestCanary(
-    kafka_host=kafka.host,
-    kafka_port=kafka.port,
-    kafka_topic="events"
-)
-
+sensor = KDBFullSensor()
 
 # Binance Futures 
 # beast.client.make()
