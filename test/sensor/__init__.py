@@ -62,7 +62,9 @@ class KDBFullSensor(pulumi.ComponentResource):
                path=self.path,
                skip_push=False,
                files=[
-                "tick.q"
+                "tick.q",
+                "u.q",
+                "sym.q"
                ],
                command="q tick.q"
         )
