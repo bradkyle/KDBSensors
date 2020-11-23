@@ -1,1 +1,0 @@
-FROM kdb32COPY producer.q .

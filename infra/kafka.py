@@ -3,6 +3,43 @@ import pulumi_docker as docker
 import pulumi_gcp as gcp
 import pulumi_kubernetes as k8s
 
+class KafkaTopic(pulumi.ComponentResource):
+    def __init__(
+        self,
+        name,
+        replicas=1,
+        partitions=10,
+        retention_ms=86400000,
+        segment_bytes=1073741824,
+        retention_bytes=5000000000
+      ):
+        self.name = name
+        self.partitions = partitions
+        self.replicas = replicas
+        self.retention_ms=retention_ms
+        self.segment_bytes = segment_bytes
+        self.retention_bytes = retention_bytes
+        self.topic = k8s.apiextensions.CustomResource(
+            "kafka",
+             api_version="kafka.strimzi.io/v1beta1",
+             kind="KafkaTopic",
+             metadata={
+                "name": self.name,
+                "namespace": "default",
+                "labels": {
+                  "strimzi.io/cluster": "strimzi-cluster"
+                }
+             },
+             spec={
+                "partitions": self.partitions,
+                "replicas": self.replicas,
+                "config": {
+                  "retention.ms": self.retention_ms,
+                  "segment.bytes": self.segment_bytes,
+                    "retention.bytes": self.retention_bytes
+                }
+            })
+
 # TODO storage configuration
 # TODO replica configuration
 
@@ -285,24 +322,32 @@ class StrimziKafkaOperator(pulumi.ComponentResource):
             })
 
 
-    def add_topic(self, name):
-        self.topics[name] = k8s.apiextensions.CustomResource(
-            "kafka",
-             api_version="kafka.strimzi.io/v1beta1",
-             kind="KafkaTopic",
-             metadata={
-                "name": name,
-                "namespace": "default",
-                "labels": {
-                  "strimzi.io/cluster": "strimzi-cluster"
-                }
-             },
-             spec={
-                "partitions": 20,
-                "replicas": 2,
-                "config": {
-                  "retention.ms": 86400000,
-                  "segment.bytes": 1073741824,
-                  "retention.bytes": 5000000000
-                }
-            })
+    def add_topic(self,
+                  name,
+                  replicas=1,
+                  partitions=10,
+                  retention_ms=86400000,
+                  segment_bytes=1073741824,
+                  retention_bytes=5000000000
+        ):
+        topic = KafkaTopic(
+            name=name,
+            replicas=replicas,
+            partitions=partitions,
+            retention_bytes=retention_bytes,
+            retention_ms=retention_ms,
+            segment_bytes=segment_bytes
+        )
+        self.topics[topic] = topic
+        return topic
+
+
+
+
+
+
+
+
+
+
+

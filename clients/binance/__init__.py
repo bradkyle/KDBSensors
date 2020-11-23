@@ -6,6 +6,7 @@
 spec(
     name='BinanceWssSensor',
     kind="",
+    files = [],
 )
 
 spec(

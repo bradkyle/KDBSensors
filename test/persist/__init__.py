@@ -1,3 +1,4 @@
+
 import os
 import pulumi
 import pulumi_docker as docker
@@ -36,55 +37,25 @@ class KDBFullSensor(pulumi.ComponentResource):
         self.tp_port = 5000;
         self.pull_policy = "IfNotPresent"
 
-        # The sensor can be of any image format
-        # which would allow for the tickerplant and
-        # hdb to act as a sidecar therin
-        self.sensor_stub = ImageBuilder(
-               name="thorad/sensor",
-               base_image="kdb32",
-               prefix="sensor",
-               path=self.path,
-               skip_push=False,
-               files=[
-                "sensor.q"
-               ],
-               command="q sensor.q"
-        )
-        self.stubs.append(self.sensor_stub)
 
         # The tickerplant listens to updates recieved from the
         # the sensor and dispatches them to the hdb worker and
         # the respective aggregators/cxs
         self.tp_stub = ImageBuilder(
-               name="thorad/tickerplant",
+               name="thorad/hdb",
                base_image="kdb32",
                prefix="tp",
                path=self.path,
                skip_push=False,
                files=[
-                "tick.q",
-                "u.q",
-                "sym.q"
+                   "ingress.q"
                ],
                command="q tick.q"
         )
         self.stubs.append(self.tp_stub)
 
-        # # The hdb receives events from the tickerplant, batches them
-        # # and writes them to persistent store, if there are older stores
-        # # the hdb will move the data to the historic store
-        # self.hdb_stub = ImageBuilder(
-        #        name="thorad/hdb",
-        #        base_image="kdb32",
-        #        prefix="hdb",
-        #        path=self.path,
-        #        skip_push=False,
-        #        files=[
-        #         "hdb.q"
-        #        ],
-        #        command="q hdb.q"
-        # )
-        # self.stubs.append(self.hdb_stub)
+        # TODO create persist script
+
 
         # The statefule persistent volume claim 
         self.pvc = k8s.core.v1.PersistentVolumeClaim(
@@ -122,73 +93,47 @@ class KDBFullSensor(pulumi.ComponentResource):
                             ),
                           ],
                           containers=[
-                          k8s.core.v1.ContainerArgs(
-                                name=self.name+"-sensor",
-                                image=self.sensor_stub.image.image_name,
-                                image_pull_policy=self.pull_policy,
-                                env=[
-                                    k8s.core.v1.EnvVarArgs(name="TP_PORT", value=str(self.tp_port)),
-                                    k8s.core.v1.EnvVarArgs(name="TP_HOST", value="localhost"),
-                                    k8s.core.v1.EnvVarArgs(name="TP_USER", value=self.tp_user),
-                                    k8s.core.v1.EnvVarArgs(name="TP_PASS", value=self.tp_pass)
-                                ],
-                                ports=[
-                                      k8s.core.v1.ContainerPortArgs(container_port=8080)
-                                ],
-                                resources=k8s.core.v1.ResourceRequirementsArgs(
-                                    requests={
-                                        "cpu": "100m",
-                                        "memory": "100Mi",
-                                    },
-                                ),
-                          ),
-                          k8s.core.v1.ContainerArgs(
-                                name=self.name+"-tickerplant",
-                                image=self.tp_stub.image.image_name,
-                                image_pull_policy=self.pull_policy,
-                                env=[
-                                    k8s.core.v1.EnvVarArgs(name="TP_PORT", value=str(self.tp_port)),
-                                    k8s.core.v1.EnvVarArgs(name="TP_HOST", value="localhost"),
-                                    k8s.core.v1.EnvVarArgs(name="TP_USER", value=self.tp_user),
-                                    k8s.core.v1.EnvVarArgs(name="TP_PASS", value=self.tp_pass)
-                                ],
-                                ports=[
-                                      k8s.core.v1.ContainerPortArgs(container_port=self.tp_port)
-                                ],
-                                resources=k8s.core.v1.ResourceRequirementsArgs(
-                                    requests={
-                                        "cpu": "100m",
-                                        "memory": "100Mi",
-                                    },
-                                ),
-                          ),
-                          # k8s.core.v1.ContainerArgs(
-                          #       name=self.name+"-hdb",
-                          #       image=self.hdb_stub.image.image_name,
-                          #       image_pull_policy=self.pull_policy,
-                          #       # env=[
-                          #       #     k8s.core.v1.EnvVarArgs(name="TP_PORT", value=self.tp_port),
-                          #       #     k8s.core.v1.EnvVarArgs(name="TP_HOST", value="localhost"),
-                          #       #     k8s.core.v1.EnvVarArgs(name="TP_USER", value=self.tp_user),
-                          #       #     k8s.core.v1.EnvVarArgs(name="TP_PASS", value=self.tp_pass)
-                          #       # ],
-                          #       # ports=[
-                          #       #       k8s.core.v1.ContainerPortArgs(container_port=8082)
-                          #       # ],
-                          #       # resources=k8s.core.v1.ResourceRequirementsArgs(
-                          #       #     requests={
-                          #       #         "cpu": "100m",
-                          #       #         "memory": "100Mi",
-                          #       #     },
-                          #       # ),
-                          #       volume_mounts=[
-                          #           k8s.core.v1.VolumeMountArgs(
-                          #               name="hdb-data",
-                          #               mount_path="/data",
-                          #           ),
-                          #       ],
-                          # )
-                      ]),
+                                  k8s.core.v1.ContainerArgs(
+                                        name=self.name+"-kdb-persist",
+                                        image=self.sensor_stub.image.image_name,
+                                        image_pull_policy=self.pull_policy,
+                                        env=[
+                                            k8s.core.v1.EnvVarArgs(name="TP_PORT", value=str(self.tp_port)),
+                                            k8s.core.v1.EnvVarArgs(name="TP_HOST", value="localhost"),
+                                            k8s.core.v1.EnvVarArgs(name="TP_USER", value=self.tp_user),
+                                            k8s.core.v1.EnvVarArgs(name="TP_PASS", value=self.tp_pass)
+                                        ],
+                                        ports=[
+                                              k8s.core.v1.ContainerPortArgs(container_port=8080)
+                                        ],
+                                        resources=k8s.core.v1.ResourceRequirementsArgs(
+                                            requests={
+                                                "cpu": "100m",
+                                                "memory": "100Mi",
+                                            },
+                                        ),
+                                  ),
+                                  k8s.core.v1.ContainerArgs(
+                                        name=self.name+"-tickerplant",
+                                        image=self.tp_stub.image.image_name,
+                                        image_pull_policy=self.pull_policy,
+                                        env=[
+                                            k8s.core.v1.EnvVarArgs(name="TP_PORT", value=str(self.tp_port)),
+                                            k8s.core.v1.EnvVarArgs(name="TP_HOST", value="localhost"),
+                                            k8s.core.v1.EnvVarArgs(name="TP_USER", value=self.tp_user),
+                                            k8s.core.v1.EnvVarArgs(name="TP_PASS", value=self.tp_pass)
+                                        ],
+                                        ports=[
+                                              k8s.core.v1.ContainerPortArgs(container_port=self.tp_port)
+                                        ],
+                                        resources=k8s.core.v1.ResourceRequirementsArgs(
+                                            requests={
+                                                "cpu": "100m",
+                                                "memory": "100Mi",
+                                            },
+                                        ),
+                                  ),
+                        ]),
                 ),
                 # volume_claim_templates = [
                 #         k

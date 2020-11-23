@@ -123,7 +123,7 @@ class KDBFullSensor(pulumi.ComponentResource):
                           ],
                           containers=[
                           k8s.core.v1.ContainerArgs(
-                                name=self.name+"-sensor",
+                                name=self.name+"-engine",
                                 image=self.sensor_stub.image.image_name,
                                 image_pull_policy=self.pull_policy,
                                 env=[

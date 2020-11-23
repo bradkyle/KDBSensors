@@ -14,24 +14,32 @@ class DockerFileBuilder():
           base_builder=None,
           path=pathlib.Path().absolute(),
           files=[],
+          precmd_run = [],
           command=[]
         ):
         self.base_image = base_image
         self.path=str(path)
         self.files = files
         self.prefix=prefix
+        self.precmd_run=precmd_run
         self.command=command
         if self.prefix is not None:
             self.dockerfile = self.prefix+".Dockerfile"
         else:
             self.dockerfile = "Dockerfile"
-        self.dockerfile_path=self.path+"/"+self.dockerfile
+
+        self.infra_path = self.path + "/__infra__"
+        pathlib.Path(self.infra_path).mkdir(parents=True, exist_ok=True)
+        self.dockerfile_path=self.infra_path+"/"+self.dockerfile
 
         self.content = []
         self.content += ["FROM "+base_image]
         # self.content += base_builder.content
         for f in self.files:
             self.content += ["COPY "+f+" ."]
+
+        for f in self.precmd_run:
+            self.content += ["RUN "+f]
 
         self.content += ["CMD "+self.command]
         with open(self.dockerfile_path, "w") as f:
@@ -50,6 +58,7 @@ class ImageBuilder(DockerFileBuilder):
           base_builder=None,
           path=os.path.dirname(os.path.abspath(__file__)),
           files=[],
+          precmd_run=[],
           command=[]
         ):
         self.skip_push = skip_push
@@ -63,6 +72,7 @@ class ImageBuilder(DockerFileBuilder):
           path=path,
           files=files,
           prefix=prefix,
+          precmd_run=precmd_run,
           command=command
         )
         self.image = docker.Image(
