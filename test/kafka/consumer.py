@@ -9,9 +9,10 @@ async def consume():
     group = os.environ['KAFKA_GROUP']
     topic = os.environ['KAFKA_TOPIC']
     consumer = AIOKafkaConsumer(
-        'my_topic', 'my_other_topic',
-        loop=loop, bootstrap_servers='localhost:9092',
-        group_id="my-group")
+        topic,
+        loop=loop,
+        bootstrap_servers=host+":"+port,
+        group_id=group)
     # Get cluster layout and join group `my-group`
     await consumer.start()
     try:

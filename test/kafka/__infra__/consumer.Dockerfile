@@ -1,5 +1,5 @@
-FROM python:3.8.6-slim-buster
+FROM python:3.8-slim-buster
 COPY consumer.py .
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-CMD consumer.py
+CMD python consumer.py

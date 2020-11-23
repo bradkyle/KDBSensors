@@ -17,6 +17,10 @@ from grafanalib.core import (
     SHORT_FORMAT, single_y_axis, Target, TimeRange, YAxes, YAxis
 )
 
+# aggregator reads from topic
+class AddAgg(self):
+    def __init__(self):
+        pass
 
 class SensorSpec(object):
     def __init__(self):
@@ -30,6 +34,7 @@ class Sensor(pulumi.ComponentResource):
                  monitoring_cluster = None,
                  kafka_operator = None,
                  opts:pulumi.ResourceOptions = None,
+                 sensor_stub = None
         ):
         super().__init__('Sensor', name, None, opts)
         self.path = os.path.dirname(os.path.abspath(__file__))
@@ -38,8 +43,14 @@ class Sensor(pulumi.ComponentResource):
         self.monitoring_cluster = monitoring_cluster
         self.kafka_operator = kafka_operator
 
+        # TODO make configurable
         self.kafka_topic = self.kafka_operator.add_topic(
             name=self.name+"-topic",
+            replicas=3,
+            partitions=10,
+            retention_ms=3.6e6,
+            segment_bytes=1073741824,
+            retention_bytes=1e9
         )
 
         self.tp_user = prand.RandomString("tp_user-"+self.name,length=10,special=False);
@@ -147,139 +158,6 @@ class Sensor(pulumi.ComponentResource):
         )
 
 
-        # Example tickerplant 
-        #===================================================================================================> 
-
-        # No persistence to log file
-        # Create tickerplant consumer
-        # The tickerplant listens to updates recieved from the
-        # the sensor and dispatches them to the hdb worker and
-        # the respective aggregators/cxs
-        self.tp_stub = ImageBuilder(
-               name="thorad/tickerplant",
-               base_image="kdb32",
-               prefix="tp",
-               path=self.path,
-               skip_push=False,
-               files=[
-                "tick.q",
-                "u.q",
-                "sym.q"
-               ],
-               command="q tick.q"
-        )
-        self.stubs.append(self.tp_stub)
-
-
-        # TODO different group id per replica
-        labels = { 'app': self.name+'-tp-{0}-{1}'.format(get_project(), get_stack()) }
-        self.tickerplant = k8s.apps.v1.Deployment('tp-deployment',
-            spec=k8s.apps.v1.DeploymentSpecArgs(
-                selector=k8s.meta.v1.LabelSelectorArgs(match_labels=producer_labels),
-                replicas=1,
-                template=k8s.core.v1.PodTemplateSpecArgs(
-                    metadata=k8s.meta.v1.ObjectMetaArgs(labels=producer_labels),
-                    spec=k8s.core.v1.PodSpecArgs(containers=[
-                            k8s.core.v1.ContainerArgs(
-                                    name="tp",
-                                    image=self.tp_stub.image.image_name,
-                                    env=[
-                                        k8s.core.v1.EnvVarArgs(name="KAFKA_HOST", value=self.kafka_operator.host),
-                                        k8s.core.v1.EnvVarArgs(name="KAFKA_PORT", value=str(self.kafka_operator.port)),
-                                        k8s.core.v1.EnvVarArgs(name="KAFKA_TOPIC", value=self.kafka_topic.name),
-                                        k8s.core.v1.EnvVarArgs(name="KAFKA_GROUP", value=str(1)),
-                                        k8s.core.v1.EnvVarArgs(name="TP_PORT", value=str(self.tp_port)),
-                                        k8s.core.v1.EnvVarArgs(name="TP_USER", value=self.tp_user),
-                                        k8s.core.v1.EnvVarArgs(name="TP_PASS", value=self.tp_pass)
-                                    ],
-                                    ports=[k8s.core.v1.ContainerPortArgs(
-                                        container_port=8080,
-                                    )],
-                                    resources=k8s.core.v1.ResourceRequirementsArgs(
-                                        requests={
-                                            "cpu": "100m",
-                                            "memory": "100Mi",
-                                        },
-                                    ),
-                           ),
-                      ]),
-                ),
-            ),
-        )
-
-         # // allow external aggregators to subscribe to the tickerplant
-        self.tp_service = k8s.core.v1.Service("tp-service-"+self.name,
-                spec=k8s.core.v1.ServiceSpecArgs(
-                    type='LoadBalancer',
-                    selector=labels,
-                    ports=[k8s.core.v1.ServicePortArgs(port=self.tp_port)],
-        ))
-
-        # Example subsriber
-        #===================================================================================================> 
-
-        # The tickerplant listens to updates recieved from the
-        # the sensor and dispatches them to the hdb worker and
-        # the respective aggregators/cxs
-        self.cx_stub = ImageBuilder(
-               name="thorad/cx",
-               base_image="kdb32",
-               prefix="cx",
-               path=self.path,
-               skip_push=False,
-               files=[
-                "cx.q",
-                "u.q",
-                "sym.q"
-               ],
-               command="q tick.q"
-        )
-        self.stubs.append(self.cx_stub)
-
-
-        # TODO different group id per replica
-        labels = { 'app': self.name+'-cx-{0}-{1}'.format(get_project(), get_stack()) }
-        self.tickerplant = k8s.apps.v1.Deployment('cx-deployment',
-            spec=k8s.apps.v1.DeploymentSpecArgs(
-                selector=k8s.meta.v1.LabelSelectorArgs(match_labels=producer_labels),
-                replicas=1,
-                template=k8s.core.v1.PodTemplateSpecArgs(
-                    metadata=k8s.meta.v1.ObjectMetaArgs(labels=producer_labels),
-                    spec=k8s.core.v1.PodSpecArgs(containers=[
-                            k8s.core.v1.ContainerArgs(
-                                    name="cx",
-                                    image=self.cx_stub.image.image_name,
-                                    env=[
-                                        k8s.core.v1.EnvVarArgs(name="TP_PORT", value=str(self.tp_port)),
-                                        k8s.core.v1.EnvVarArgs(name="TP_USER", value=self.tp_user),
-                                        k8s.core.v1.EnvVarArgs(name="TP_PASS", value=self.tp_pass)
-                                    ],
-                                    ports=[k8s.core.v1.ContainerPortArgs(
-                                        container_port=8080,
-                                    )],
-                                    resources=k8s.core.v1.ResourceRequirementsArgs(
-                                        requests={
-                                            "cpu": "100m",
-                                            "memory": "100m",
-                                        },
-                                    ),
-                           ),
-                      ]),
-                ),
-            ),
-        )
-
-         # // allow external aggregators to subscribe to the tickerplant
-        self.cx_service = k8s.core.v1.Service("cx-service-"+self.name,
-                spec=k8s.core.v1.ServiceSpecArgs(
-                    type='LoadBalancer',
-                    selector=labels,
-                    ports=[k8s.core.v1.ServicePortArgs(port=self.tp_port)],
-        ))
-
-
-    def clean(self):
-        for s in self.stubs:
-            print(s.dockerfile_path)
+        # TODO dispatcher / rdb
 
 

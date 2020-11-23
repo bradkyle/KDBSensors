@@ -23,7 +23,7 @@ class KDBIngestCanary(pulumi.ComponentResource):
         }
 
         self.producer_stub = ImageBuilder(
-               name="producer",
+               name="thorad/producer",
                base_image="kdb32",
                prefix="producer",
                path=self.path,
@@ -70,7 +70,7 @@ class KDBIngestCanary(pulumi.ComponentResource):
         }
 
         self.consumer_stub = ImageBuilder(
-               name="consumer",
+               name="thorad/consumer",
                base_image="kdb32",
                prefix="consumer",
                path=self.path,
@@ -135,8 +135,8 @@ class PYIngestCanary(pulumi.ComponentResource):
         }
 
         self.producer_stub = ImageBuilder(
-               name="producer",
-               base_image="python:3.8.6-slim-buster",
+               name="thorad/producer",
+               base_image="python:3.8-slim-buster",
                prefix="producer",
                path=self.path,
                files=[
@@ -146,7 +146,8 @@ class PYIngestCanary(pulumi.ComponentResource):
                precmd_run = [
                     "pip install -r requirements.txt"
                ],
-               command="producer.py"
+               skip_push=False,
+               command="python producer.py"
         )
 
         self.producer_deployment = k8s.apps.v1.Deployment('producer-deployment',
@@ -186,8 +187,8 @@ class PYIngestCanary(pulumi.ComponentResource):
         }
 
         self.consumer_stub = ImageBuilder(
-               name="consumer",
-               base_image="python:3.8.6-slim-buster",
+               name="thorad/consumer",
+               base_image="python:3.8-slim-buster",
                prefix="consumer",
                path=self.path,
                files=[
@@ -197,7 +198,8 @@ class PYIngestCanary(pulumi.ComponentResource):
                precmd_run = [
                     "pip install -r requirements.txt"
                ],
-               command="consumer.py"
+               skip_push=False,
+               command="python consumer.py"
         )
 
         self.consumer_deployment = k8s.apps.v1.Deployment('consumer-deployment',
