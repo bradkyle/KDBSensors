@@ -3,7 +3,7 @@ import pulumi
 import pulumi_docker as docker
 import pulumi_gcp as gcp
 import pulumi_kubernetes as k8s
-from infra.docker import ImageBuilder
+from infra.docker.docker import ImageBuilder
 
 class KDBIngestCanary(pulumi.ComponentResource):
     """
@@ -23,7 +23,7 @@ class KDBIngestCanary(pulumi.ComponentResource):
         }
 
         self.producer_stub = ImageBuilder(
-               name="canary_producer",
+               name="producer",
                base_image="kdb32",
                prefix="producer",
                path=self.path,
@@ -33,7 +33,7 @@ class KDBIngestCanary(pulumi.ComponentResource):
                command="q producer.q -p 8080"
         )
 
-        self.producer_deployment = k8s.apps.v1.Deployment('producer_deployment',
+        self.producer_deployment = k8s.apps.v1.Deployment('producer-deployment',
             spec=k8s.apps.v1.DeploymentSpecArgs(
                 selector=k8s.meta.v1.LabelSelectorArgs(match_labels=producer_labels),
                 replicas=1,
@@ -70,7 +70,7 @@ class KDBIngestCanary(pulumi.ComponentResource):
         }
 
         self.consumer_stub = ImageBuilder(
-               name="canary_consumer",
+               name="consumer",
                base_image="kdb32",
                prefix="consumer",
                path=self.path,
@@ -80,7 +80,7 @@ class KDBIngestCanary(pulumi.ComponentResource):
                command="q consumer.q -p 8080"
         )
 
-        self.consumer_deployment = k8s.apps.v1.Deployment('consumer_deployment',
+        self.consumer_deployment = k8s.apps.v1.Deployment('consumer-deployment',
             spec=k8s.apps.v1.DeploymentSpecArgs(
                 selector=k8s.meta.v1.LabelSelectorArgs(match_labels=consumer_labels),
                 replicas=1,
@@ -109,6 +109,7 @@ class KDBIngestCanary(pulumi.ComponentResource):
                 ),
             ),
         )
+
 
 class PYIngestCanary(pulumi.ComponentResource):
     """
@@ -133,10 +134,10 @@ class PYIngestCanary(pulumi.ComponentResource):
             "role": "master"
         }
 
-        self.consumer_stub = ImageBuilder(
-               name="canary_consumer",
+        self.producer_stub = ImageBuilder(
+               name="producer",
                base_image="python:3.8.6-slim-buster",
-               prefix="consumer",
+               prefix="producer",
                path=self.path,
                files=[
                 "producer.py",
@@ -148,7 +149,7 @@ class PYIngestCanary(pulumi.ComponentResource):
                command="producer.py"
         )
 
-        self.producer_deployment = k8s.apps.v1.Deployment('producer_deployment',
+        self.producer_deployment = k8s.apps.v1.Deployment('producer-deployment',
             spec=k8s.apps.v1.DeploymentSpecArgs(
                 selector=k8s.meta.v1.LabelSelectorArgs(match_labels=producer_labels),
                 replicas=1,
@@ -160,8 +161,8 @@ class PYIngestCanary(pulumi.ComponentResource):
                                     image=self.producer_stub.image.image_name,
                                     env=[
                                         k8s.core.v1.EnvVarArgs(name="KAFKA_HOST", value=self.kafka_host),
-                                        k8s.core.v1.EnvVarArgs(name="KAFKA_PORT", value=str(kafka_port)),
-                                        k8s.core.v1.EnvVarArgs(name="KAFKA_TOPIC", value=self.kafka_topic.name)
+                                        k8s.core.v1.EnvVarArgs(name="KAFKA_PORT", value=str(self.kafka_port)),
+                                        k8s.core.v1.EnvVarArgs(name="KAFKA_TOPIC", value=self.kafka_topic)
                                     ],
                                     ports=[k8s.core.v1.ContainerPortArgs(
                                         container_port=8080,
@@ -179,13 +180,13 @@ class PYIngestCanary(pulumi.ComponentResource):
         )
 
         consumer_labels = {
-            "app": "producer",
+            "app": "consumer",
             "tier": "ingress",
             "role": "master"
         }
 
         self.consumer_stub = ImageBuilder(
-               name="canary_consumer",
+               name="consumer",
                base_image="python:3.8.6-slim-buster",
                prefix="consumer",
                path=self.path,
@@ -199,7 +200,7 @@ class PYIngestCanary(pulumi.ComponentResource):
                command="consumer.py"
         )
 
-        self.consumer_deployment = k8s.apps.v1.Deployment('consumer_deployment',
+        self.consumer_deployment = k8s.apps.v1.Deployment('consumer-deployment',
             spec=k8s.apps.v1.DeploymentSpecArgs(
                 selector=k8s.meta.v1.LabelSelectorArgs(match_labels=consumer_labels),
                 replicas=1,
@@ -212,7 +213,7 @@ class PYIngestCanary(pulumi.ComponentResource):
                                     env=[
                                         k8s.core.v1.EnvVarArgs(name="KAFKA_HOST", value=self.kafka_host),
                                         k8s.core.v1.EnvVarArgs(name="KAFKA_PORT", value=str(self.kafka_port)),
-                                        k8s.core.v1.EnvVarArgs(name="KAFKA_TOPIC", value=self.kafka_topic.name),
+                                        k8s.core.v1.EnvVarArgs(name="KAFKA_TOPIC", value=self.kafka_topic),
                                         k8s.core.v1.EnvVarArgs(name="KAFKA_GROUP", value=str(0))
                                     ],
                                     ports=[k8s.core.v1.ContainerPortArgs(

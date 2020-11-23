@@ -36,7 +36,7 @@ Image	clients/core.py	/^from pulumi_docker import Image, DockerBuild$/;"	i
 ImageBuilder	core/__init__.py	/^from infra.docker import ImageBuilder$/;"	i
 ImageBuilder	infra/docker.py	/^class ImageBuilder(DockerFileBuilder):$/;"	c
 ImageBuilder	test/engine/__init__.py	/^from infra.docker import ImageBuilder$/;"	i
-ImageBuilder	test/kafka/__init__.py	/^from infra.docker import ImageBuilder$/;"	i
+ImageBuilder	test/kafka/__init__.py	/^from infra.docker.docker import ImageBuilder$/;"	i
 ImageBuilder	test/kafktick/__init__.py	/^from infra.docker import ImageBuilder$/;"	i
 ImageBuilder	test/persist/__init__.py	/^from infra.docker import ImageBuilder$/;"	i
 ImageBuilder	test/pykafk/__init__.py	/^from infra.docker import ImageBuilder$/;"	i
