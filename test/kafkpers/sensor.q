@@ -87,23 +87,16 @@ q:{
 
 // TODO convert to kafka
 feed:{
- .kfk.Pub[topic;.kfk.PARTITION_UA;"BAM";""]}     
-      h$[rand 2;
- (".u.upd";`trade;t 1+rand maxn);
- (".u.upd";`quote;q 1+rand qpt*maxn)];
+    .kfk.Pub[topic;.kfk.PARTITION_UA;t 1+rand maxn;""]}     
+    .kfk.Pub[topic;.kfk.PARTITION_UA;q 1+rand qpt*maxn;""]}     
   };
 
-feedm:{
- .kfk.Pub[topic;.kfk.PARTITION_UA;"BAM";""]}
- (".u.upd";`trade;(enlist a#x),t a:1+rand maxn);
- (".u.upd";`quote;(enlist a#x),q a:1+rand qpt*maxn)];
-  };
 
 init:{
  o:"t"$9e5*floor (.z.T-3600000)%9e5;
  d:.z.T-o;
  len:floor d%113;
- feedm each `timespan$o+asc len?d;}
+ } 
 
 // h:neg hopen hndl; 
 / h(".u.upd";`quote;q 15);

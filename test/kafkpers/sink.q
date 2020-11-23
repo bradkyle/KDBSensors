@@ -19,8 +19,8 @@ client:.kfk.Consumer[kfk_cfg];
 
 .sink.buffer :{[args]
 				  
-				};
+		};
 
 // Subscribe to topic1 and topic2 with different callbacks from a single client
-.kfk.Subscribe[client;topic;enlist .kfk.PARTITION_UA;show]
+.kfk.Subscribe[client;topic;enlist .kfk.PARTITION_UA;.sink.buffer]
 

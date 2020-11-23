@@ -19,6 +19,10 @@ from grafanalib.core import (
 
 # https://docs.bitnami.com/tutorials/create-multi-cluster-monitoring-dashboard-thanos-grafana-prometheus/
 
+class MonitoringOperator(object):
+    def __init__(self):
+        pass
+
 class MonitoringCluster(pulumi.ComponentResource):
     def __init__(self):
 
@@ -117,106 +121,101 @@ class MonitoringCluster(pulumi.ComponentResource):
                 password: "KEY"
               defaultBuckets: "thanos"
         """
-        # Add Monitoring Prometheus
-        # Install the Prometheus Operator in the data producer
-        # Inject prometheus chart into kubernetes cluster
-        # self.thanos_chart = Chart(
-        #     "thanos",
-        #     ChartOpts(
-        #         chart="thanos",
-        #         # version="1.24.4",
-        #         fetch_opts=FetchOpts(
-        #             repo="https://charts.bitnami.com/bitnami",
-        #         ),
-        #         values={
+        Add Monitoring Prometheus
+        Install the Prometheus Operator in the data producer
+        Inject prometheus chart into kubernetes cluster
+        self.thanos_chart = Chart(
+            "thanos",
+            ChartOpts(
+                chart="thanos",
+                # version="1.24.4",
+                fetch_opts=FetchOpts(
+                    repo="https://charts.bitnami.com/bitnami",
+                ),
+                values={
 
-        #         }
-        #     ),
-        # )
+                }
+            ),
+        )
 
         # self.grafana_username = "username"
         # self.grafana_password = "password"
 
         # # TODO password, username etc
-        # self.grafana_chart = Chart(
-        #     "grafana",
-        #     ChartOpts( # TODO add bitnami/grafana
-        #         chart="grafana",
-        #         version="3.4.7",
-        #         fetch_opts=FetchOpts(
-        #             repo="https://charts.bitnami.com/bitnami",
-        #         ),
-        #         values={
-        #             "service":{
-        #                 "type":"LoadBalancer"
-        #             },
-        #             "admin":{
-        #                 "username":self.grafana_username,
-        #                 "password":self.grafana_password
-        #             },
-        #             "plugins":[],
-        #             "dashboardConfigMaps":{
-
-        #             },
-        #         }
-        #     ),
-        # )
+        self.grafana_chart = Chart(
+            "grafana",
+            ChartOpts( # TODO add bitnami/grafana
+                chart="grafana",
+                version="3.4.7",
+                fetch_opts=FetchOpts(
+                    repo="https://charts.bitnami.com/bitnami",
+                ),
+                values={
+                    "service":{
+                        "type":"LoadBalancer"
+                    },
+                    "admin":{
+                        "username":self.grafana_username,
+                        "password":self.grafana_password
+                    },
+                    "plugins":[],
+                    "dashboardConfigMaps":{},
+                }
+            ),
+        )
 
     def inject_prometheus(self, label, k8s_provider):
-        # k8s.helm.v3.Chart(
-        #     "prometheus-operator",
-        #      k8s.helm.v3.ChartOpts(
-        #         chart="prometheus-operator",
-        #         # version="1.24.4",
-        #         fetch_opts=k8s.helm.v3.FetchOpts(
-        #             repo="https://charts.bitnami.com/bitnami",
-        #         ),
-        #         values={
-        #             "prometheus": {
-        #                 "thanos": {
-        #                     "create": True,
-        #                     "service":{
-        #                         "type": "LoadBalancer"
-        #                     }
-        #                 },
-        #                 "service": {
-        #                     "type":"ClusterIp",
-        #                 },
-        #                 "externalLabels":{
-        #                     "cluster": label
-        #                 }
-        #             },
-        #             "operator":{
-        #                 "service":{
-        #                     "type":"ClusterIp"
-        #                 }
-        #             },
-        #             "alertmanager":{
-        #                 "service":{
-        #                     "type":"ClusterIp"
-        #                 }
-        #             }
-        #         }
-        #     ),
-        #     opts=ResourceOptions(provider=k8s_provider))
-        pass
+        k8s.helm.v3.Chart(
+            "prometheus-operator",
+             k8s.helm.v3.ChartOpts(
+                chart="prometheus-operator",
+                # version="1.24.4",
+                fetch_opts=k8s.helm.v3.FetchOpts(
+                    repo="https://charts.bitnami.com/bitnami",
+                ),
+                values={
+                    "prometheus": {
+                        "thanos": {
+                            "create": True,
+                            "service":{
+                                "type": "LoadBalancer"
+                            }
+                        },
+                        "service": {
+                            "type":"ClusterIp",
+                        },
+                        "externalLabels":{
+                            "cluster": label
+                        }
+                    },
+                    "operator":{
+                        "service":{
+                            "type":"ClusterIp"
+                        }
+                    },
+                    "alertmanager":{
+                        "service":{
+                            "type":"ClusterIp"
+                        }
+                    }
+                }
+            ),
+            opts=ResourceOptions(provider=k8s_provider))
 
     def add_service_monitor(self, name:str, labels, namespace:str, interval:str, provider):
-        # exposed_service = Service("exposed-service-"+name,
-        #         spec=ServiceSpecArgs(
-        #             type='Service',
-        #             selector=labels,
-        #             ports=[ServicePortArgs(port=port)],
-        #         ), __opts__=ResourceOptions(provider=k8s_provider))
+        exposed_service = Service("exposed-service-"+name,
+                spec=ServiceSpecArgs(
+                    type='Service',
+                    selector=labels,
+                    ports=[ServicePortArgs(port=port)],
+                ), __opts__=ResourceOptions(provider=k8s_provider))
 
-        # service_monitor = Service("service-monitor-"+name,
-        #         spec=ServiceSpecArgs(
-        #             type='ServiceMonitor',
-        #             selector=labels,
-        #             ports=[ServicePortArgs(port=port)],
-        #         ), __opts__=ResourceOptions(provider=k8s_provider))
-        # TODO?
-        pass
+        service_monitor = Service("service-monitor-"+name,
+                spec=ServiceSpecArgs(
+                    type='ServiceMonitor',
+                    selector=labels,
+                    ports=[ServicePortArgs(port=port)],
+                ), __opts__=ResourceOptions(provider=k8s_provider))
 
 
     def add_grafana_dashboard(self, dashboard, columns_per_row=2):

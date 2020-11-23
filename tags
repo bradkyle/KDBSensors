@@ -70,6 +70,7 @@ Mapping	test/persist/__init__.py	/^from typing import Mapping, Sequence$/;"	i
 Mapping	test/pykafk/__init__.py	/^from typing import Mapping, Sequence$/;"	i
 Mapping	test/sensor/__init__.py	/^from typing import Mapping, Sequence$/;"	i
 MonitoringCluster	infra/monitoring.py	/^class MonitoringCluster(pulumi.ComponentResource):$/;"	c
+MonitoringOperator	infra/monitoring.py	/^class MonitoringOperator(object):$/;"	c
 Output	clients/core.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 Output	infra/monitoring.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 Output	test/engine/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
@@ -123,6 +124,7 @@ __init__	infra/filegen.py	/^    def __init__($/;"	m	class:FileBuilder
 __init__	infra/kafka.py	/^    def __init__($/;"	m	class:KafkaTopic
 __init__	infra/kafka.py	/^    def __init__(self, k8s_provider):$/;"	m	class:StrimziKafkaOperator
 __init__	infra/monitoring.py	/^    def __init__(self):$/;"	m	class:MonitoringCluster
+__init__	infra/monitoring.py	/^    def __init__(self):$/;"	m	class:MonitoringOperator
 __init__	ingest/__init__.py	/^    def __init__($/;"	m	class:KDBIngest
 __init__	notebooks/q/kxpy/kx_backend_inline.py	/^ def __init__(self,df=None):$/;"	m	class:qshell
 __init__	notebooks/q/kxpy/kx_comm.py	/^    def __init__(self, target_name='', data=None, metadata=None, buffers=None, **kwargs):$/;"	m	class:Comm
@@ -277,6 +279,7 @@ os	infra/docker.py	/^import os$/;"	i
 os	infra/filegen.py	/^import os$/;"	i
 os	test/engine/__init__.py	/^import os$/;"	i
 os	test/kafka/__init__.py	/^import os$/;"	i
+os	test/kafka/consumer.py	/^import os$/;"	i
 os	test/kafka/producer.py	/^import os$/;"	i
 os	test/kafkpers/__init__.py	/^import os$/;"	i
 os	test/kafktick/__init__.py	/^import os$/;"	i

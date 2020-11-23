@@ -73,7 +73,7 @@ class StrimziKafkaOperator(pulumi.ComponentResource):
              },
              spec={
                 "kafka": {
-                  "version": "2.4.0",
+                  "version": "2.6.0",
                   "replicas": 3,
                   "listeners": {
                     "plain": {},
@@ -99,7 +99,7 @@ class StrimziKafkaOperator(pulumi.ComponentResource):
                       {
                         "id": 0,
                         "type": "persistent-claim",
-                        "size": "100Gi",
+                        "size": "5Gi",
                           "deleteClaim": False
                       }
                     ]
@@ -252,7 +252,7 @@ class StrimziKafkaOperator(pulumi.ComponentResource):
                   },
                   "storage": {
                     "type": "persistent-claim",
-                    "size": "5Gi",
+                    "size": "1Gi",
                     "deleteClaim": False
                   },
                   "metrics": {

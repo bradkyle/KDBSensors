@@ -49,7 +49,7 @@ class Sensor(pulumi.ComponentResource):
             replicas=3,
             partitions=10,
             retention_ms=3.6e6,
-            segment_bytes=1073741824,
+            segment_bytes=1e9,
             retention_bytes=1e9
         )
 

@@ -1,5 +1,6 @@
 from aiokafka import AIOKafkaConsumer
 import asyncio
+import os
 
 loop = asyncio.get_event_loop()
 
