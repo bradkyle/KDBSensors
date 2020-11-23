@@ -9,14 +9,8 @@ from test.sensor import KDBFullSensor
 config = pulumi.Config()
 # isMinikube = config.get_bool("isMinikube")
 
-kafka = StrimziKafkaOperator(k8s_provider=None)
-events_topic = kafka.add_topic("events");
-
-# Sensors 
-#--------------------------------------------> 
-
-# AuthSensors and Effectors 
-#--------------------------------------------> 
+# Monitoring
+#=========================================================================================> 
 
 sensor = KDBFullSensor()
 

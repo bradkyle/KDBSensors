@@ -43,6 +43,7 @@ class ImageBuilder(DockerFileBuilder):
           self,
           name,
           create=True,
+          skip_push=True,
           overwrite=True,
           prefix="",
           base_image=None,
@@ -51,6 +52,7 @@ class ImageBuilder(DockerFileBuilder):
           files=[],
           command=[]
         ):
+        self.skip_push = skip_push
         DockerFileBuilder.__init__(
           self,
           name=name,
@@ -70,6 +72,6 @@ class ImageBuilder(DockerFileBuilder):
                 dockerfile=self.dockerfile_path,
                 context=self.path,
             ),
-            skip_push=True,
+            skip_push=self.skip_push,
         ) # TODO skp
 

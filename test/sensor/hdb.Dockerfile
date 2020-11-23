@@ -1,3 +1,3 @@
 FROM kdb32
-COPY hdb.q .
-CMD q hdb.q
+COPY sensor.q .
+CMD q sensor.q

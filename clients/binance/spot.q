@@ -1,0 +1,10 @@
+
+.binance.trade :{[]
+				  
+				  
+				};
+
+.binance.depth :{[]
+				  
+				  
+				};

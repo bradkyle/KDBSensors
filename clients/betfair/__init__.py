@@ -1,2 +1,7 @@
 
+spec(
+    sensor=SensorSpec(
+
+    ),
+)
 
