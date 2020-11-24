@@ -25,20 +25,16 @@
 // Sensor logic 
 /------------------------------------------------------------------------------------------>``
 
-.sensor.WebsocketSensor :{[]
+.sensor.WSSSensor:{[name;url;subs;parsers]
+				  
+		  
+	};
+
+.sensor.CronSensor :{[name;url;interval;parsers]
 		  
 		  
 	};
 
-.sensor.CronSensor :{[]
-		  
-		  
-	};
-
-.sensor.WebsocketSensor :{[]
-		  
-		  
-	};
 
 // Effector logic 
 /------------------------------------------------------------------------------------------>``

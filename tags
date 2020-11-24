@@ -15,6 +15,7 @@ Config	clients/core.py	/^from pulumi import Config, export, get_project, get_sta
 Config	infra/monitoring.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 Config	infra/monitoring/cluster.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 Config	infra/monitoring/operator.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
+Config	infra/monitoring/thanos.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 Config	test/engine/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 Config	test/kafkpers/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 Config	test/kafktick/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
@@ -66,10 +67,12 @@ KxComm	notebooks/q/kxpy/kx_backend_inline.py	/^  from kxpy.kx_comm import Comm a
 List	infra/monitoring.py	/^from typing import Mapping, Sequence, List$/;"	i
 List	infra/monitoring/cluster.py	/^from typing import Mapping, Sequence, List$/;"	i
 List	infra/monitoring/operator.py	/^from typing import Mapping, Sequence, List$/;"	i
+List	infra/monitoring/thanos.py	/^from typing import Mapping, Sequence, List$/;"	i
 LoggingConfigurable	notebooks/q/kxpy/kx_comm.py	/^from traitlets.config import LoggingConfigurable$/;"	i
 Mapping	infra/monitoring.py	/^from typing import Mapping, Sequence, List$/;"	i
 Mapping	infra/monitoring/cluster.py	/^from typing import Mapping, Sequence, List$/;"	i
 Mapping	infra/monitoring/operator.py	/^from typing import Mapping, Sequence, List$/;"	i
+Mapping	infra/monitoring/thanos.py	/^from typing import Mapping, Sequence, List$/;"	i
 Mapping	test/engine/__init__.py	/^from typing import Mapping, Sequence$/;"	i
 Mapping	test/kafkpers/__init__.py	/^from typing import Mapping, Sequence$/;"	i
 Mapping	test/kafktick/__init__.py	/^from typing import Mapping, Sequence$/;"	i
@@ -85,6 +88,7 @@ Output	clients/core.py	/^from pulumi import Config, export, get_project, get_sta
 Output	infra/monitoring.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 Output	infra/monitoring/cluster.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 Output	infra/monitoring/operator.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
+Output	infra/monitoring/thanos.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 Output	test/engine/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 Output	test/kafkpers/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 Output	test/kafktick/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
@@ -96,6 +100,7 @@ PYIngestCanary	test/kafka/__init__.py	/^class PYIngestCanary(pulumi.ComponentRes
 RandomPassword	infra/monitoring.py	/^from pulumi_random import RandomPassword$/;"	i
 RandomPassword	infra/monitoring/cluster.py	/^from pulumi_random import RandomPassword$/;"	i
 RandomPassword	infra/monitoring/operator.py	/^from pulumi_random import RandomPassword$/;"	i
+RandomPassword	infra/monitoring/thanos.py	/^from pulumi_random import RandomPassword$/;"	i
 ResourceOptions	clients/core.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 ResourceOptions	infra/monitoring.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 ResourceOptions	infra/monitoring.py	/^from pulumi import get_stack, ResourceOptions, StackReference$/;"	i
@@ -103,6 +108,8 @@ ResourceOptions	infra/monitoring/cluster.py	/^from pulumi import Config, export,
 ResourceOptions	infra/monitoring/cluster.py	/^from pulumi import get_stack, ResourceOptions, StackReference$/;"	i
 ResourceOptions	infra/monitoring/operator.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 ResourceOptions	infra/monitoring/operator.py	/^from pulumi import get_stack, ResourceOptions, StackReference$/;"	i
+ResourceOptions	infra/monitoring/thanos.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
+ResourceOptions	infra/monitoring/thanos.py	/^from pulumi import get_stack, ResourceOptions, StackReference$/;"	i
 ResourceOptions	test/engine/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 ResourceOptions	test/kafkpers/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 ResourceOptions	test/kafktick/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
@@ -118,6 +125,7 @@ SensorSpec	test/pykafk/__init__.py	/^class SensorSpec(object):$/;"	c
 Sequence	infra/monitoring.py	/^from typing import Mapping, Sequence, List$/;"	i
 Sequence	infra/monitoring/cluster.py	/^from typing import Mapping, Sequence, List$/;"	i
 Sequence	infra/monitoring/operator.py	/^from typing import Mapping, Sequence, List$/;"	i
+Sequence	infra/monitoring/thanos.py	/^from typing import Mapping, Sequence, List$/;"	i
 Sequence	test/engine/__init__.py	/^from typing import Mapping, Sequence$/;"	i
 Sequence	test/kafkpers/__init__.py	/^from typing import Mapping, Sequence$/;"	i
 Sequence	test/kafktick/__init__.py	/^from typing import Mapping, Sequence$/;"	i
@@ -128,9 +136,11 @@ Service	test/engine/__init__.py	/^class Service(pulumi.ComponentResource):$/;"	c
 StackReference	infra/monitoring.py	/^from pulumi import get_stack, ResourceOptions, StackReference$/;"	i
 StackReference	infra/monitoring/cluster.py	/^from pulumi import get_stack, ResourceOptions, StackReference$/;"	i
 StackReference	infra/monitoring/operator.py	/^from pulumi import get_stack, ResourceOptions, StackReference$/;"	i
+StackReference	infra/monitoring/thanos.py	/^from pulumi import get_stack, ResourceOptions, StackReference$/;"	i
 StoprMirror	test/engine/__init__.py	/^class StoprMirror(self):$/;"	c
 StrimziKafkaOperator	__main__.py	/^from infra.kafka import StrimziKafkaOperator$/;"	i
 StrimziKafkaOperator	infra/kafka.py	/^class StrimziKafkaOperator(pulumi.ComponentResource):$/;"	c
+Thanos	infra/monitoring/thanos.py	/^class Thanos(object):$/;"	c
 Unicode	notebooks/q/kxpy/kx_comm.py	/^from traitlets import Instance, Unicode, Bytes, Bool, Dict, Any, default$/;"	i
 __all__	notebooks/q/kxpy/kx_comm.py	/^__all__ = ['Comm']$/;"	v
 __del__	notebooks/q/kxpy/kx_comm.py	/^    def __del__(self):$/;"	m	class:Comm	file:
@@ -149,6 +159,7 @@ __init__	infra/monitoring.py	/^    def __init__(self):$/;"	m	class:MonitoringClu
 __init__	infra/monitoring.py	/^    def __init__(self):$/;"	m	class:MonitoringOperator
 __init__	infra/monitoring/cluster.py	/^    def __init__(self):$/;"	m	class:MonitoringCluster
 __init__	infra/monitoring/operator.py	/^    def __init__(self, k8s_provider):$/;"	m	class:MonitoringOperator
+__init__	infra/monitoring/thanos.py	/^    def __init__(self, k8s_provider):$/;"	m	class:Thanos
 __init__	ingest/__init__.py	/^    def __init__($/;"	m	class:KDBIngest
 __init__	notebooks/q/kxpy/kx_backend_inline.py	/^ def __init__(self,df=None):$/;"	m	class:qshell
 __init__	notebooks/q/kxpy/kx_comm.py	/^    def __init__(self, target_name='', data=None, metadata=None, buffers=None, **kwargs):$/;"	m	class:Comm
@@ -187,7 +198,7 @@ add_grafana_dashboard_graph	infra/monitoring/operator.py	/^    def add_grafana_d
 add_sensor	clients/register.py	/^    def add_sensor(self, name, args:KDBSensorArgs):$/;"	m	class:KDBSensorRegistry
 add_service_monitor	infra/monitoring.py	/^    def add_service_monitor(self, name:str, labels, namespace:str, interval:str, provider):$/;"	m	class:MonitoringCluster
 add_service_monitor	infra/monitoring/cluster.py	/^    def add_service_monitor(self, name:str, labels, namespace:str, interval:str, provider):$/;"	m	class:MonitoringCluster
-add_service_monitor	infra/monitoring/operator.py	/^    def add_service_monitor(self, name:str, labels, namespace:str, interval:str, k8s_provider=None):$/;"	m	class:MonitoringOperator
+add_service_monitor	infra/monitoring/operator.py	/^    def add_service_monitor(self, name:str, labels, namespace:str, interval:str, port=8080, k8s_provider=None):$/;"	m	class:MonitoringOperator
 add_topic	infra/kafka.py	/^    def add_topic(self,$/;"	m	class:StrimziKafkaOperator
 args	clients/binance/__init__.py	/^    args={$/;"	v
 args	clients/ibroke/__init__.py	/^    args={$/;"	v
@@ -225,6 +236,7 @@ docker	infra/kafka.py	/^import pulumi_docker as docker$/;"	i
 docker	infra/monitoring.py	/^import pulumi_docker as docker$/;"	i
 docker	infra/monitoring/cluster.py	/^import pulumi_docker as docker$/;"	i
 docker	infra/monitoring/operator.py	/^import pulumi_docker as docker$/;"	i
+docker	infra/monitoring/thanos.py	/^import pulumi_docker as docker$/;"	i
 docker	test/engine/__init__.py	/^import pulumi_docker as docker$/;"	i
 docker	test/kafka/__init__.py	/^import pulumi_docker as docker$/;"	i
 docker	test/kafkpers/__init__.py	/^import pulumi_docker as docker$/;"	i
@@ -239,6 +251,7 @@ export	clients/core.py	/^from pulumi import Config, export, get_project, get_sta
 export	infra/monitoring.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 export	infra/monitoring/cluster.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 export	infra/monitoring/operator.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
+export	infra/monitoring/thanos.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 export	test/engine/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 export	test/kafkpers/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 export	test/kafktick/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
@@ -254,6 +267,7 @@ gcp	infra/kafka.py	/^import pulumi_gcp as gcp$/;"	i
 gcp	infra/monitoring.py	/^import pulumi_gcp as gcp$/;"	i
 gcp	infra/monitoring/cluster.py	/^import pulumi_gcp as gcp$/;"	i
 gcp	infra/monitoring/operator.py	/^import pulumi_gcp as gcp$/;"	i
+gcp	infra/monitoring/thanos.py	/^import pulumi_gcp as gcp$/;"	i
 gcp	test/engine/__init__.py	/^import pulumi_gcp as gcp$/;"	i
 gcp	test/kafka/__init__.py	/^import pulumi_gcp as gcp$/;"	i
 gcp	test/kafkpers/__init__.py	/^import pulumi_gcp as gcp$/;"	i
@@ -266,6 +280,7 @@ get_project	clients/core.py	/^from pulumi import Config, export, get_project, ge
 get_project	infra/monitoring.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 get_project	infra/monitoring/cluster.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 get_project	infra/monitoring/operator.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
+get_project	infra/monitoring/thanos.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 get_project	test/engine/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 get_project	test/kafkpers/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 get_project	test/kafktick/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
@@ -279,6 +294,8 @@ get_stack	infra/monitoring/cluster.py	/^from pulumi import Config, export, get_p
 get_stack	infra/monitoring/cluster.py	/^from pulumi import get_stack, ResourceOptions, StackReference$/;"	i
 get_stack	infra/monitoring/operator.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 get_stack	infra/monitoring/operator.py	/^from pulumi import get_stack, ResourceOptions, StackReference$/;"	i
+get_stack	infra/monitoring/thanos.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
+get_stack	infra/monitoring/thanos.py	/^from pulumi import get_stack, ResourceOptions, StackReference$/;"	i
 get_stack	test/engine/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 get_stack	test/kafkpers/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 get_stack	test/kafktick/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
@@ -294,12 +311,14 @@ inject_prometheus	infra/monitoring/cluster.py	/^    def inject_prometheus(self, 
 json	infra/monitoring.py	/^import json$/;"	i
 json	infra/monitoring/cluster.py	/^import json$/;"	i
 json	infra/monitoring/operator.py	/^import json$/;"	i
+json	infra/monitoring/thanos.py	/^import json$/;"	i
 json_clean	notebooks/q/kxpy/kx_comm.py	/^from ipykernel.jsonutil import json_clean$/;"	i
 k8s	core/__init__.py	/^import pulumi_kubernetes as k8s$/;"	i
 k8s	infra/kafka.py	/^import pulumi_kubernetes as k8s$/;"	i
 k8s	infra/monitoring.py	/^import pulumi_kubernetes as k8s$/;"	i
 k8s	infra/monitoring/cluster.py	/^import pulumi_kubernetes as k8s$/;"	i
 k8s	infra/monitoring/operator.py	/^import pulumi_kubernetes as k8s$/;"	i
+k8s	infra/monitoring/thanos.py	/^import pulumi_kubernetes as k8s$/;"	i
 k8s	test/engine/__init__.py	/^import pulumi_kubernetes as k8s$/;"	i
 k8s	test/kafka/__init__.py	/^import pulumi_kubernetes as k8s$/;"	i
 k8s	test/kafkpers/__init__.py	/^import pulumi_kubernetes as k8s$/;"	i
@@ -368,6 +387,7 @@ pulumi	infra/kafka.py	/^import pulumi$/;"	i
 pulumi	infra/monitoring.py	/^import pulumi$/;"	i
 pulumi	infra/monitoring/cluster.py	/^import pulumi$/;"	i
 pulumi	infra/monitoring/operator.py	/^import pulumi$/;"	i
+pulumi	infra/monitoring/thanos.py	/^import pulumi$/;"	i
 pulumi	test/engine/__init__.py	/^import pulumi$/;"	i
 pulumi	test/kafka/__init__.py	/^import pulumi$/;"	i
 pulumi	test/kafkpers/__init__.py	/^import pulumi$/;"	i
@@ -397,6 +417,8 @@ traceback	notebooks/q/kxpy/kx_backend_inline.py	/^ import traceback$/;"	i
 uuid	infra/monitoring.py	/^import uuid$/;"	i
 uuid	infra/monitoring/cluster.py	/^import uuid$/;"	i
 uuid	infra/monitoring/operator.py	/^import uuid$/;"	i
+uuid	infra/monitoring/thanos.py	/^import uuid$/;"	i
 uuid	notebooks/q/kxpy/kx_comm.py	/^import uuid$/;"	i
 widget	notebooks/q/kxpy/kx_backend_inline.py	/^  from ipywidgets.widgets import widget$/;"	i
 yaml	infra/monitoring/operator.py	/^import yaml$/;"	i
+yaml	infra/monitoring/thanos.py	/^import yaml$/;"	i

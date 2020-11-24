@@ -29,12 +29,21 @@ class MonitoringOperator(object):
         # Add Monitoring Prometheus
         # Install the Prometheus Operator in the data producer
         # Inject prometheus chart into kubernetes cluster
+        # self.prometheus_chart = k8s.helm.v3.Chart(
+        #     "prometheus",
+        #      k8s.helm.v3.ChartOpts(
+        #         chart="prometheus",
+        #         fetch_opts=k8s.helm.v3.FetchOpts(
+        #             repo="https://charts.helm.sh/stable",
+        #         ),
+        # ))
+
         self.prometheus_chart = k8s.helm.v3.Chart(
-            "prometheus-operator",
+            "prometheus",
              k8s.helm.v3.ChartOpts(
-                chart="prometheus",
+                chart="kube-prometheus-stack",
                 fetch_opts=k8s.helm.v3.FetchOpts(
-                    repo="https://charts.helm.sh/stable",
+                    repo="https://prometheus-community.github.io/helm-charts",
                 ),
         ))
 
@@ -62,21 +71,20 @@ class MonitoringOperator(object):
         )
 
 
-    def add_service_monitor(self, name:str, labels, namespace:str, interval:str, k8s_provider=None):
-        return None
-        # exposed_service = Service("exposed-service-"+name,
-        #         spec=ServiceSpecArgs(
-        #             type='Service',
-        #             selector=labels,
-        #             ports=[ServicePortArgs(port=port)],
-        #         ), __opts__=ResourceOptions(provider=k8s_provider))
+    def add_service_monitor(self, name:str, labels, namespace:str, interval:str, port=8080, k8s_provider=None):
+        exposed_service = k8s.core.v1.Service("exposed-service-"+name,
+                spec=k8s.core.v1.ServiceSpecArgs(
+                    type='Service',
+                    selector=labels,
+                    ports=[k8s.core.v1.ServicePortArgs(port=port)],
+                ), __opts__=ResourceOptions(provider=k8s_provider))
 
-        # service_monitor = Service("service-monitor-"+name,
-        #         spec=ServiceSpecArgs(
-        #             type='ServiceMonitor',
-        #             selector=labels,
-        #             ports=[ServicePortArgs(port=port)],
-        #         ), __opts__=ResourceOptions(provider=k8s_provider))
+        service_monitor = k8s.core.v1.Service("service-monitor-"+name,
+                spec=k8s.core.v1.ServiceSpecArgs(
+                    type='ServiceMonitor',
+                    selector=labels,
+                    ports=[k8s.core.v1.ServicePortArgs(port=port)],
+                ), __opts__=ResourceOptions(provider=k8s_provider))
 
 
     def add_grafana_dashboard(self, dashboard, columns_per_row=2):

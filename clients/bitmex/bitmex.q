@@ -1,41 +1,52 @@
 
-.bitmex.announcement :{[]
+.bitmex.parsers.announcement :{[]
 				  
 				};
 
-.bitmex.chat :{[]
+.bitmex.parsers.chat :{[]
 				  
 				};
 
-.bitmex.connected :{[]
+.bitmex.parsers.connected :{[]
 				  
 				};
 
-.bitmex.funding :{[]
+.bitmex.parsers.funding :{[]
 				  
 				};
 
-.bitmex.instrument :{[]
+.bitmex.parsers.instrument :{[]
 				  
 				};
 
-.bitmex.insurance :{[]
+.bitmex.parsers.insurance :{[]
 				  
 				};
 
-.bitmex.liquidation :{[]
+.bitmex.parsers.liquidation :{[]
 				  
 				};
 
-.bitmex.orderBook10 :{[]
+.bitmex.parsers.orderBook10 :{[]
 				  
 				};
 
-.bitmex.quote :{[]
+.bitmex.parsers.quote :{[]
 				  
 				};
 
-.bitmex.trade :{[]
+.bitmex.parsers.trade :{[]
 				  
 				};
 
+.bitmex.subs:{[]
+				  
+				  
+				};
+
+.sensor.WSSSensor[
+	"binancefutures";
+	"wss://stream.binance.com:9443/stream?streams=";
+	.bitmex.subs;
+  .bitmex.parsers	
+	];

@@ -1,12 +1,22 @@
 
-.binance.trade :{[]
+.binance.spot.parsers.trade :{[]
 				  
 				  
 				};
 
-.binance.depth :{[]
+.binance.spot.parsers.depth :{[]
 				  
 				  
 				};
 
-.sensor.WSSSensor["";.binance.upd];
+.binance.spot.subs:{[]
+				  
+				  
+				};
+
+.sensor.WSSSensor[
+	"binancefutures";
+	"wss://stream.binance.com:9443/stream?streams=";
+	.binance.spot.subs;
+	.binance.spot.parsers
+	];
