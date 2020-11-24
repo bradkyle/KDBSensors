@@ -1,13 +1,13 @@
 \l kafka/kfk.q
-.utl.require"ws-client"
 
-host:getenv[`KAFKA_HOST]
-port:getenv[`KAFKA_PORT]
-topic:getenv[`KAFKA_TOPIC]
-show (host;port;topic)
+khost:getenv[`KAFKA_HOST]
+kport:getenv[`KAFKA_PORT]
+ktopic:getenv[`KAFKA_TOPIC]
+kgroup:getenv[`KAFKA_GROUP]
+show (khost;kport;ktopic)
 
 kfk_cfg:(!) . flip(
-    (`metadata.broker.list;`$":"sv string (host;port));
+    (`metadata.broker.list;(`$":"sv (khost;kport)));
     (`group.id;`0);
     (`fetch.wait.max.ms;`10);
     (`statistics.interval.ms;`10000)
@@ -15,5 +15,5 @@ kfk_cfg:(!) . flip(
 client:.kfk.Consumer[kfk_cfg];
 
 // Subscribe to topic1 and topic2 with different callbacks from a single client
-.kfk.Subscribe[client;topic;enlist .kfk.PARTITION_UA;show]
+.kfk.Subscribe[client;`$ktopic;enlist .kfk.PARTITION_UA;show]
 

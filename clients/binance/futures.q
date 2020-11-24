@@ -33,3 +33,9 @@
 				  
 				  
 				};
+
+.binance.upd:{[]
+				  
+				  }
+
+.sensor.WSSSensor["";.binance.upd];

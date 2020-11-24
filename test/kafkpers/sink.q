@@ -1,6 +1,6 @@
 
 \l kafka/kfk.q
-.utl.require"ws-client"
+\l sym.q
 
 host:getenv[`KAFKA_HOST]
 port:getenv[`KAFKA_PORT]
@@ -15,12 +15,20 @@ kfk_cfg:(!) . flip(
     );
 client:.kfk.Consumer[kfk_cfg];
 
-.sink.batch:();
 
-.sink.buffer :{[args]
+.sink.ingress :{[msg]
+    // consume count
+    // consume gauge
+    // latency time ms
+    // todo parse with proto
+    .sink.tab[`raw],:msg;
+    .sink.tab[x],:enlist msg[`datum]; 
+
 				  
 		};
 
+
 // Subscribe to topic1 and topic2 with different callbacks from a single client
-.kfk.Subscribe[client;topic;enlist .kfk.PARTITION_UA;.sink.buffer]
+.kfk.Subscribe[client;topic;enlist .kfk.PARTITION_UA;.sink.ingress]
+
 

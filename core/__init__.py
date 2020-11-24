@@ -16,29 +16,6 @@ class KDBAgent(pulumi.ComponentResource):
         self.kafka_topic = kafka_topic
         self.path = os.path.dirname(os.path.abspath(__file__))
 
-        self.state_stub = ImageBuilder(
-               name="canary_producer",
-               base_image="kdb32",
-               prefix="producer",
-               path=self.path,
-               files=[
-                "producer.q"
-               ],
-               command="q producer.q -p 8080"
-        )
-
-
-        self.agent_stub = ImageBuilder(
-               name="canary_producer",
-               base_image="kdb32",
-               prefix="producer",
-               path=self.path,
-               files=[
-                "producer.q"
-               ],
-               command="q producer.q -p 8080"
-        )
-
         self.effector_stub = ImageBuilder(
                name="canary_producer",
                base_image="kdb32",
@@ -58,12 +35,45 @@ class KDBAgent(pulumi.ComponentResource):
                     metadata=k8s.meta.v1.ObjectMetaArgs(labels=producer_labels),
                     spec=k8s.core.v1.PodSpecArgs(containers=[
                             k8s.core.v1.ContainerArgs(
-                                    name="producer",
+                                    name="state",
                                     image=self.producer_stub.image.image_name,
                                     env=[
                                         k8s.core.v1.EnvVarArgs(name="KAFKA_HOST", value=kafka_host),
                                         k8s.core.v1.EnvVarArgs(name="KAFKA_PORT", value=kafka_port),
                                         k8s.core.v1.EnvVarArgs(name="KAFKA_TOPIC", value=kafka_topic)
+                                    ],
+                                    ports=[k8s.core.v1.ContainerPortArgs(
+                                        container_port=8080,
+                                    )],
+                                    resources=k8s.core.v1.ResourceRequirementsArgs(
+                                        requests={
+                                            "cpu": "100m",
+                                            "memory": "100Mi",
+                                        },
+                                    ),
+                           ),
+                            k8s.core.v1.ContainerArgs(
+                                    name="model",
+                                    image=self.producer_stub.image.image_name,
+                                    env=[
+                                        k8s.core.v1.EnvVarArgs(name="STATE_PORT", value=kafka_host),
+                                        k8s.core.v1.EnvVarArgs(name="ADAPT_PORT", value=kafka_host),
+                                    ],
+                                    ports=[k8s.core.v1.ContainerPortArgs(
+                                        container_port=8080,
+                                    )],
+                                    resources=k8s.core.v1.ResourceRequirementsArgs(
+                                        requests={
+                                            "cpu": "100m",
+                                            "memory": "100Mi",
+                                        },
+                                    ),
+                           ),
+                           k8s.core.v1.ContainerArgs(
+                                    name="adapter",
+                                    image=self.producer_stub.image.image_name,
+                                    env=[
+
                                     ],
                                     ports=[k8s.core.v1.ContainerPortArgs(
                                         container_port=8080,

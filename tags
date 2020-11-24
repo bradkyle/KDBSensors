@@ -53,6 +53,7 @@ KDBFullSensor	clients/core.py	/^class KDBFullSensor(pulumi.ComponentResource):$/
 KDBFullSensor	test/persist/__init__.py	/^class KDBFullSensor(pulumi.ComponentResource):$/;"	c
 KDBFullSensor	test/sensor/__init__.py	/^class KDBFullSensor(pulumi.ComponentResource):$/;"	c
 KDBIngest	ingest/__init__.py	/^class KDBIngest(pulumi.ComponentResource):$/;"	c
+KDBIngestCanary	__main__.py	/^from test.kafka import PYIngestCanary, KDBIngestCanary$/;"	i
 KDBIngestCanary	test/kafka/__init__.py	/^class KDBIngestCanary(pulumi.ComponentResource):$/;"	c
 KDBSensorRegistry	clients/register.py	/^class KDBSensorRegistry(pulumi.ComponentResource):$/;"	c
 KDBSensorSpec	test/engine/__init__.py	/^class KDBSensorSpec(object):$/;"	c
@@ -79,7 +80,7 @@ Output	test/kafktick/__init__.py	/^from pulumi import Config, export, get_projec
 Output	test/persist/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 Output	test/pykafk/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 Output	test/sensor/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
-PYIngestCanary	__main__.py	/^from test.kafka import PYIngestCanary$/;"	i
+PYIngestCanary	__main__.py	/^from test.kafka import PYIngestCanary, KDBIngestCanary$/;"	i
 PYIngestCanary	test/kafka/__init__.py	/^class PYIngestCanary(pulumi.ComponentResource):$/;"	c
 RandomPassword	infra/monitoring.py	/^from pulumi_random import RandomPassword$/;"	i
 ResourceOptions	clients/core.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
@@ -132,7 +133,7 @@ __init__	test/engine/__init__.py	/^    def __init__(self):$/;"	m	class:GateWay
 __init__	test/engine/__init__.py	/^    def __init__(self):$/;"	m	class:KDBSensorSpec
 __init__	test/engine/__init__.py	/^    def __init__(self):$/;"	m	class:Service
 __init__	test/engine/__init__.py	/^    def __init__(self,$/;"	m	class:Engine
-__init__	test/kafka/__init__.py	/^    def __init__(self, kafka_host, kafka_port, kafka_topic):$/;"	m	class:KDBIngestCanary
+__init__	test/kafka/__init__.py	/^    def __init__(self,name,kafka_operator):$/;"	m	class:KDBIngestCanary
 __init__	test/kafka/__init__.py	/^    def __init__(self,name,kafka_operator):$/;"	m	class:PYIngestCanary
 __init__	test/kafkpers/__init__.py	/^    def __init__(self):$/;"	m	class:AddAgg
 __init__	test/kafkpers/__init__.py	/^    def __init__(self):$/;"	m	class:SensorSpec
@@ -159,11 +160,17 @@ add_grafana_dashboard_graph	infra/monitoring.py	/^    def add_grafana_dashboard_
 add_sensor	clients/register.py	/^    def add_sensor(self, name, args:KDBSensorArgs):$/;"	m	class:KDBSensorRegistry
 add_service_monitor	infra/monitoring.py	/^    def add_service_monitor(self, name:str, labels, namespace:str, interval:str, provider):$/;"	m	class:MonitoringCluster
 add_topic	infra/kafka.py	/^    def add_topic(self,$/;"	m	class:StrimziKafkaOperator
+args	clients/binance/__init__.py	/^    args={$/;"	v
+args	clients/ibroke/__init__.py	/^    args={$/;"	v
+args	clients/iqfeed/__init__.py	/^    args={$/;"	v
 assets	clients/bitmex/__init__.py	/^    assets=[],$/;"	v
 asyncio	test/kafka/consumer.py	/^import asyncio$/;"	i
 asyncio	test/kafka/producer.py	/^import asyncio$/;"	i
 backend_nbagg	notebooks/q/kxpy/kx_backend_inline.py	/^  from matplotlib.backends import backend_nbagg$/;"	i
-canary	__main__.py	/^canary = PYIngestCanary(name="canary",kafka_operator=kafka_operator)$/;"	v
+base	clients/binance/__init__.py	/^    base="",$/;"	v
+base	clients/ibroke/__init__.py	/^    base="",$/;"	v
+base	clients/iqfeed/__init__.py	/^    base="",$/;"	v
+canary	__main__.py	/^canary = KDBIngestCanary(name="canary",kafka_operator=kafka_operator)$/;"	v
 channels	clients/bitmex/__init__.py	/^    channels=[],$/;"	v
 clean	test/engine/__init__.py	/^    def clean(self):$/;"	m	class:Engine
 clean	test/kafktick/__init__.py	/^    def clean(self):$/;"	m	class:Sensor
@@ -194,6 +201,8 @@ docker	test/kafktick/__init__.py	/^import pulumi_docker as docker$/;"	i
 docker	test/persist/__init__.py	/^import pulumi_docker as docker$/;"	i
 docker	test/pykafk/__init__.py	/^import pulumi_docker as docker$/;"	i
 docker	test/sensor/__init__.py	/^import pulumi_docker as docker$/;"	i
+dockerfile	clients/ibroke/__init__.py	/^    dockerfile="Dockerfile",$/;"	v
+dockerfile	clients/iqfeed/__init__.py	/^    dockerfile="Dockerfile",$/;"	v
 draw_if_interactive	notebooks/q/kxpy/kx_backend_inline.py	/^def draw_if_interactive():$/;"	f
 export	clients/core.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 export	infra/monitoring.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
@@ -203,7 +212,7 @@ export	test/kafktick/__init__.py	/^from pulumi import Config, export, get_projec
 export	test/persist/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 export	test/pykafk/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
 export	test/sensor/__init__.py	/^from pulumi import Config, export, get_project, get_stack, Output, ResourceOptions$/;"	i
-files	clients/binance/__init__.py	/^    files = [],$/;"	v
+files	clients/binance/__init__.py	/^    files = [$/;"	v
 files	clients/bitmex/__init__.py	/^    files=[],$/;"	v
 flush_figures	notebooks/q/kxpy/kx_backend_inline.py	/^def flush_figures():$/;"	f
 forward	core/model/model.cpp	/^				K forward(K obs) {$/;"	f
@@ -255,6 +264,8 @@ k8s	test/sensor/__init__.py	/^import pulumi_kubernetes as k8s$/;"	i
 kafka_operator	__main__.py	/^kafka_operator = StrimziKafkaOperator(k8s_provider=None)$/;"	v
 kernel	notebooks/q/kxpy/kx_comm.py	/^    kernel = True$/;"	v	class:Comm
 kind	clients/binance/__init__.py	/^    kind="",$/;"	v
+kind	clients/ibroke/__init__.py	/^    kind=ClientType.SENSOR,$/;"	v
+kind	clients/iqfeed/__init__.py	/^    kind=ClientType.SENSOR,$/;"	v
 loop	test/kafka/consumer.py	/^loop = asyncio.get_event_loop()$/;"	v
 loop	test/kafka/producer.py	/^loop = asyncio.get_event_loop()$/;"	v
 matplotlib	notebooks/q/kxpy/kx_backend_inline.py	/^  import matplotlib.pyplot as plt$/;"	i
@@ -269,6 +280,8 @@ name	clients/binance/__init__.py	/^    name='BinanceWssSensor',$/;"	v
 name	clients/bitmex/__init__.py	/^    name='BitmexAuthRestEffector',$/;"	v
 name	clients/bitmex/__init__.py	/^    name='BitmexAuthWssSensor',$/;"	v
 name	clients/bitmex/__init__.py	/^    name='BitmexWssSensor',$/;"	v
+name	clients/ibroke/__init__.py	/^    name='InteractiveBrokersSensor',$/;"	v
+name	clients/iqfeed/__init__.py	/^    name='IQFeedSensor',$/;"	v
 namedtuple	notebooks/q/kxpy/kx_backend_inline.py	/^from collections import namedtuple$/;"	i
 new_figure_manager	notebooks/q/kxpy/kx_backend_inline.py	/^from matplotlib.backends.backend_agg import new_figure_manager, FigureCanvasAgg # analysis: ignore$/;"	i
 on_close	notebooks/q/kxpy/kx_comm.py	/^    def on_close(self, callback):$/;"	m	class:Comm

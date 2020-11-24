@@ -5,8 +5,16 @@
 
 spec(
     name='BinanceWssSensor',
+    base="",
     kind="",
-    files = [],
+    files = [
+        "spotwss"
+    ],
+    args={
+        "url":"",
+        "channels":[""],
+        "assets":[]
+    }
 )
 
 spec(

@@ -14,3 +14,5 @@
 				  
 				  
 				};
+
+.sensor.WSSSensor["";.binance.upd];

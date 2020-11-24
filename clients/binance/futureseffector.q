@@ -1,0 +1,2 @@
+
+.effector.RestEffector["";.binance.upd];

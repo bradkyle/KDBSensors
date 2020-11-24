@@ -32,3 +32,10 @@
 .binance.takerlongshortRatio :{[]
 				  
 				};
+
+.binance.upd:{[]
+				  
+				  
+				};
+
+.sensor.CronSensor["";.binance.upd];
