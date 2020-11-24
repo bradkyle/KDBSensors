@@ -8,27 +8,165 @@ spec(
     base="",
     kind="",
     files = [
-        "spotwss"
+        "spot.q",
     ],
     args={
         "url":"",
-        "channels":[],
-    }
+        "channels":[
+            {
+                "name":"depth",
+                "fn":".binance.spot.parsers.depth"
+            },
+            {
+                "name":"trade",
+                "fn":".binance.spot.parsers.trade"
+            }
+        ],
+        "aggregators":[
+            {
+                "name":"last_depth",
+                "subs":["depth"],
+                "fn":".binance.spot.aggregators.depth"
+            },
+            {
+                "name":"tq",
+                "subs":["trade", "quote"],
+                "fn":".binance.spot.aggregators.tq"
+            },
+            {
+                "name":"vwap",
+                "subs":["trade"],
+                "fn":".binance.spot.aggregators.vwap"
+            },
+            {
+                "name":"ohlcv",
+                "subs":["trade"],
+                "fn":".binance.spot.aggregators.ohlc"
+            }
+        ]
+    },
 )
 
-spec(
-    name='BinanceAuthWssSensor',
-    kind="",
-)
 
 spec(
     name='BinanceFuturesWssSensor',
+    base="",
     kind="",
+    files = [
+        "futures.q",
+    ],
+    args={
+        "url":"",
+        "channels":[
+            {
+                "name":"depth",
+                "fn":".binance.spot.parsers.depth"
+            },
+            {
+                "name":"mark",
+                "match":["markPriceUpdate"],
+                "fn":".binance.spot.parsers.mark"
+            },
+            {
+                "name":"index",
+                "match":["compositeIndex"],
+                "fn":".binance.spot.parsers.index"
+            },
+            {
+                "name":"forceorder",
+                "match":["forceOrder"],
+                "fn":".binance.spot.parsers.forceorder"
+            },
+            {
+                "name":"funding",
+                "match":["markPriceUpdate"],
+                "fn":".binance.spot.parsers.funding"
+            },
+            {
+                "name":"trade",
+                "match":["aggTrade"],
+                "fn":".binance.spot.parsers.trade"
+            }
+        ],
+        "aggregators":[
+            {
+                "name":"last_depth",
+                "subs":["depth"],
+                "fn":".binance.spot.aggregators.depth"
+            },
+            {
+                "name":"tq",
+                "subs":["trade", "quote"],
+                "fn":".binance.spot.aggregators.tq"
+            },
+            {
+                "name":"index",
+                "subs":["index"],
+                "fn":".binance.spot.aggregators.index"
+            },
+            {
+                "name":"index",
+                "subs":["index"],
+                "fn":".binance.spot.aggregators.index"
+            },
+            {
+                "name":"vwap",
+                "subs":["trade"],
+                "fn":".binance.spot.aggregators.vwap"
+            },
+            {
+                "name":"ohlcv",
+                "subs":["trade"],
+                "fn":".binance.spot.aggregators.ohlc"
+            }
+        ]
+    },
 )
 
 spec(
-    name='BinanceAuthFuturesWssSensor',
+    name='BinanceFuturesAuthWssSensor',
+    base="",
     kind="",
+    files = [
+        "futures.q",
+    ],
+    args={
+        "url":"",
+        "channels":[
+            {
+                "name":"margincall",
+                "match":["MARGIN_CALL"],
+                "fn":".binance.futures.parsers.margincall"
+            },
+            {
+                "name":"account",
+                "match":["ACCOUNT_UPDATE"],
+                "fn":".binance.futures.parsers.account"
+            },
+            {
+                "name":"order",
+                "match":["ORDER_TRADE_UPDATE"],
+                "fn":".binance.spot.parsers.order"
+            },
+        ],
+        "aggregators":[
+            {
+                "name":"last_depth",
+                "subs":["depth"],
+                "fn":".binance.spot.aggregators.depth"
+            },
+            {
+                "name":"vwap",
+                "subs":["trade"],
+                "fn":".binance.spot.aggregators.vwap"
+            },
+            {
+                "name":"ohlcv",
+                "subs":["trade"],
+                "fn":".binance.spot.aggregators.ohlc"
+            }
+        ]
+    },
 )
 
 spec(

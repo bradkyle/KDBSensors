@@ -339,9 +339,8 @@ matplotlib	notebooks/q/kxpy/kx_backend_inline.py	/^import matplotlib$/;"	i
 monitoring_operator	__main__.py	/^      monitoring_operator=monitoring_operator$/;"	v
 monitoring_operator	__main__.py	/^monitoring_operator = MonitoringOperator(k8s_provider=None)$/;"	v
 name	__main__.py	/^      name="canary",$/;"	v
-name	clients/binance/__init__.py	/^    name='BinanceAuthFuturesWssSensor',$/;"	v
-name	clients/binance/__init__.py	/^    name='BinanceAuthWssSensor',$/;"	v
 name	clients/binance/__init__.py	/^    name='BinanceEffector',$/;"	v
+name	clients/binance/__init__.py	/^    name='BinanceFuturesAuthWssSensor',$/;"	v
 name	clients/binance/__init__.py	/^    name='BinanceFuturesCronSensor',$/;"	v
 name	clients/binance/__init__.py	/^    name='BinanceFuturesEffector',$/;"	v
 name	clients/binance/__init__.py	/^    name='BinanceFuturesWssSensor',$/;"	v
