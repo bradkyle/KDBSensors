@@ -1,4 +1,6 @@
 \l kafka/kfk.q
+\l prometheuskdb/q/exporter.q 
+\p 8080
 
 khost:getenv[`KAFKA_HOST]
 kport:getenv[`KAFKA_PORT]
@@ -88,11 +90,11 @@ q:{
 feed:{
     qd:q 1+rand qpt*maxn;
     td:t 1+rand maxn;
-    show qd;
-    show td;
+    show .j.j qd;
+    show .j.j td;
 
-    .kfk.Pub[topic;.kfk.PARTITION_UA;string td;""]}     
-    .kfk.Pub[topic;.kfk.PARTITION_UA;string qd;""]}     
+    .kfk.Pub[topic;.kfk.PARTITION_UA;.j.j td;""];     
+    .kfk.Pub[topic;.kfk.PARTITION_UA;.j.j qd;""];    
   };
 
 
@@ -107,4 +109,4 @@ init:{
 / h(".u.upd";`trade;t 5);
 
 init 0
-.z.ts:feed
+while[1b;feed[]];

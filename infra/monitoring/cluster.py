@@ -1,3 +1,4 @@
+
 import json
 from typing import Mapping, Sequence, List
 import pulumi
@@ -16,12 +17,6 @@ from grafanalib.core import (
     GreaterThan, OP_AND, OPS_FORMAT, Row, RTYPE_SUM, SECONDS_FORMAT,
     SHORT_FORMAT, single_y_axis, Target, TimeRange, YAxes, YAxis
 )
-
-# https://docs.bitnami.com/tutorials/create-multi-cluster-monitoring-dashboard-thanos-grafana-prometheus/
-
-class MonitoringOperator(object):
-    def __init__(self):
-        pass
 
 class MonitoringCluster(pulumi.ComponentResource):
     def __init__(self):
@@ -121,9 +116,9 @@ class MonitoringCluster(pulumi.ComponentResource):
                 password: "KEY"
               defaultBuckets: "thanos"
         """
-        Add Monitoring Prometheus
-        Install the Prometheus Operator in the data producer
-        Inject prometheus chart into kubernetes cluster
+        # Add Monitoring Prometheus
+        # Install the Prometheus Operator in the data producer
+        # Inject prometheus chart into kubernetes cluster
         self.thanos_chart = Chart(
             "thanos",
             ChartOpts(

@@ -5,6 +5,7 @@ from pulumi_gcp import storage
 # from sensors import KDBSensorRegistry
 # from monitoring.monitoring import MonitoringCluster
 from infra.kafka import StrimziKafkaOperator
+from infra.monitoring import MonitoringOperator
 # from test.sensor import KDBFullSensor
 from test.kafka import PYIngestCanary, KDBIngestCanary
 config = pulumi.Config()
@@ -13,9 +14,14 @@ config = pulumi.Config()
 # Monitoring
 #=========================================================================================> 
 
+monitoring_operator = MonitoringOperator(k8s_provider=None)
 kafka_operator = StrimziKafkaOperator(k8s_provider=None)
 
-canary = KDBIngestCanary(name="canary",kafka_operator=kafka_operator)
+canary = KDBIngestCanary(
+      name="canary",
+      kafka_operator=kafka_operator,
+      monitoring_operator=monitoring_operator
+  )
 
 # Binance Futures 
 # beast.client.make()

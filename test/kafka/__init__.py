@@ -10,13 +10,15 @@ class KDBIngestCanary(pulumi.ComponentResource):
     Creates a simple KDB instance to check that kafka reading etc
     is working correctly with kdb
     """
-    def __init__(self,name,kafka_operator):
+    def __init__(self,name,kafka_operator,monitoring_operator):
         self.name = name
         self.kafka_operator = kafka_operator
+        self.monitoring_operator = monitoring_operator
         self.kafka_host = kafka_operator.host
         self.kafka_port = kafka_operator.port
         self.kafka_topic = self.name + "-topic"
         self.path = os.path.dirname(os.path.abspath(__file__))
+        self.namespace = "default"
 
         self.kafka_operator.add_topic(
               name=self.kafka_topic,
@@ -70,6 +72,13 @@ class KDBIngestCanary(pulumi.ComponentResource):
             ),
         )
 
+        self.monitoring_operator.add_service_monitor(
+              name=self.name+"-producer",
+              labels=producer_labels,
+              namespace=self.namespace,
+              interval="10s",
+          )
+
         consumer_labels = {
             "app": "consumer",
             "tier": "ingress",
@@ -118,6 +127,15 @@ class KDBIngestCanary(pulumi.ComponentResource):
                 ),
             ),
         )
+
+        self.monitoring_operator.add_service_monitor(
+              name=self.name+"-consumer",
+              labels=consumer_labels,
+              namespace=self.namespace,
+              interval="10s",
+          )
+
+        self.monitoring_operator.add_grafana_dashboard(dashboard=None)
 
 class PYIngestCanary(pulumi.ComponentResource):
     """

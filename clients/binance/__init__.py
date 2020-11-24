@@ -12,8 +12,7 @@ spec(
     ],
     args={
         "url":"",
-        "channels":[""],
-        "assets":[]
+        "channels":[],
     }
 )
 

@@ -1,4 +1,6 @@
 \l kafka/kfk.q
+\l prometheuskdb/q/exporter.q 
+\p 8080
 
 khost:getenv[`KAFKA_HOST]
 kport:getenv[`KAFKA_PORT]
@@ -14,6 +16,14 @@ kfk_cfg:(!) . flip(
     );
 client:.kfk.Consumer[kfk_cfg];
 
+
+
+upd:{[msg]
+  msg[`data]:"c"$msg[`data];
+  msg[`rcvtime]:.z.p;
+  show msg;
+  };
+
 // Subscribe to topic1 and topic2 with different callbacks from a single client
-.kfk.Subscribe[client;`$ktopic;enlist .kfk.PARTITION_UA;show]
+.kfk.Subscribe[client;`$ktopic;enlist .kfk.PARTITION_UA;upd]
 

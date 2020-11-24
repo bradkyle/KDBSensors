@@ -1,41 +1,48 @@
 
-.binance.depthUpdate :{[]
+.binance.futures.parsers.depthUpdate :{[]
 				  
 				  
 				};
 
-.binance.markPriceUpdate :{[]
+.binance.futures.parsers.markPriceUpdate :{[]
 				  
 				  
 				};
 
-.binance.compositeIndex :{[]
+.binance.futures.parsers.compositeIndex :{[]
 				  
 				  
 				};
 
-.binance.24hrTicker :{[]
+.binance.futures.parsers.24hrTicker :{[]
 				  
 				  
 				};
 
-.binance.forceOrder :{[]
+.binance.futures.parsers.forceOrder :{[]
 				  
 				  
 				};
 
-.binance.kline :{[]
+.binance.futures.parsers.kline :{[]
 				  
 				  
 				};
 
-.binance.aggTrade :{[]
+.binance.futures.parsers.aggTrade :{[]
 				  
 				  
 				};
 
-.binance.upd:{[]
+.binance.futures.subs:{[]
 				  
-				  }
+				  
+				};
 
-.sensor.WSSSensor["";.binance.upd];
+
+.sensor.WSSSensor[
+	"binancefutures";
+	"wss://stream.binance.com:9443/stream?streams=";
+	.binance.futures.subs;
+	.binance.futures.parsers
+	];
