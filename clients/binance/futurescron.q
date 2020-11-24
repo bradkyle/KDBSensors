@@ -54,3 +54,5 @@
 				};
 
 .sensor.CronSensor["";.binance.upd];
+
+

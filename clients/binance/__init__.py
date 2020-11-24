@@ -151,13 +151,18 @@ spec(
         ],
         "aggregators":[
             {
-                "name":"last_depth",
-                "subs":["depth"],
+                "name":"inventory",
+                "subs":["account"],
                 "fn":".binance.spot.aggregators.depth"
             },
             {
-                "name":"vwap",
-                "subs":["trade"],
+                "name":"account",
+                "subs":["account"],
+                "fn":".binance.spot.aggregators.depth"
+            },
+            {
+                "name":"orders",
+                "subs":["order"],
                 "fn":".binance.spot.aggregators.vwap"
             },
             {
@@ -171,16 +176,6 @@ spec(
 
 spec(
     name='BinanceFuturesCronSensor',
-    kind="",
-)
-
-spec(
-    name='BinanceEffector',
-    kind="",
-)
-
-spec(
-    name='BinanceFuturesEffector',
     kind="",
 )
 
