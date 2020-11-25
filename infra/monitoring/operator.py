@@ -38,12 +38,21 @@ class MonitoringOperator(object):
         #         ),
         # ))
 
-        self.prometheus_chart = k8s.helm.v3.Chart(
-            "prometheus",
+        # self.prometheus_chart = k8s.helm.v3.Chart(
+        #     "prometheus",
+        #      k8s.helm.v3.ChartOpts(
+        #         chart="kube-prometheus-stack",
+        #         fetch_opts=k8s.helm.v3.FetchOpts(
+        #             repo="https://prometheus-community.github.io/helm-charts",
+        #         ),
+        # ))
+
+        self.thanos_chart = k8s.helm.v3.Chart(
+            "thanos",
              k8s.helm.v3.ChartOpts(
-                chart="kube-prometheus-stack",
+                chart="thanos",
                 fetch_opts=k8s.helm.v3.FetchOpts(
-                    repo="https://prometheus-community.github.io/helm-charts",
+                    repo="https://charts.bitnami.com/bitnami",
                 ),
         ))
 
