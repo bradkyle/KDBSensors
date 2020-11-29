@@ -14,7 +14,7 @@ config = pulumi.Config()
 # Monitoring
 #=========================================================================================> 
 
-monitoring_operator = MonitoringOperator(k8s_provider=None)
+# monitoring_operator = MonitoringOperator(k8s_provider=None)
 kafka_operator = StrimziKafkaOperator(k8s_provider=None)
 
 canary = KDBIngestCanary(

@@ -32,68 +32,95 @@ class MonitoringOperator(object):
         # self.prometheus_chart = k8s.helm.v3.Chart(
         #     "prometheus",
         #      k8s.helm.v3.ChartOpts(
-        #         chart="prometheus",
-        #         fetch_opts=k8s.helm.v3.FetchOpts(
-        #             repo="https://charts.helm.sh/stable",
-        #         ),
-        # ))
-
-        # self.prometheus_chart = k8s.helm.v3.Chart(
-        #     "prometheus",
-        #      k8s.helm.v3.ChartOpts(
         #         chart="kube-prometheus-stack",
         #         fetch_opts=k8s.helm.v3.FetchOpts(
         #             repo="https://prometheus-community.github.io/helm-charts",
         #         ),
+        #          values={
+        #             "kubeEtcd": { "enabled": False },
+        #             "kubeScheduler": { "enabled": False },
+        #             "kubeControllerManager": { "enabled": False },
+        #             "coreDns": { "enabled": False },
+        #             "global": { "rbac": { "pspEnabled": False } }
+        #         }
         # ))
 
-        self.thanos_chart = k8s.helm.v3.Chart(
-            "thanos",
+        # self.kafka = k8s.apiextensions.CustomResource(
+        #     "alertmanager",
+        #      api_version="monitoring.coreos.com/v1",
+        #      kind="AlertManager",
+        #      metadata={
+        #         "name":"strimzi-cluster"
+        #      },
+        #      spec={
+        #          "replicas":3
+        #      }
+        # )
+
+        self.prometheus_chart = k8s.helm.v3.Chart(
+            "prometheus",
              k8s.helm.v3.ChartOpts(
-                chart="thanos",
+                chart="kube-prometheus-stack",
                 fetch_opts=k8s.helm.v3.FetchOpts(
-                    repo="https://charts.bitnami.com/bitnami",
+                    repo="https://prometheus-community.github.io/helm-charts",
                 ),
         ))
 
+        # self.thanos_chart = k8s.helm.v3.Chart(
+        #     "thanos",
+        #      k8s.helm.v3.ChartOpts(
+        #         chart="thanos",
+        #         fetch_opts=k8s.helm.v3.FetchOpts(
+        #             repo="https://charts.bitnami.com/bitnami",
+        #         ),
+        #          values={
+        #             "kubeEtcd": { "enabled": False },
+        #             "kubeScheduler": { "enabled": False },
+        #             "kubeControllerManager": { "enabled": False },
+        #             "coreDns": { "enabled": False },
+        #             "global": { "rbac": { "pspEnabled": False } }
+        #         }
+        # ))
+
         # # TODO password, username etc
-        self.grafana_chart = k8s.helm.v3.Chart(
-            "grafana",
-            k8s.helm.v3.ChartOpts( # TODO add bitnami/grafana
-                chart="grafana",
-                version="3.4.7",
-                fetch_opts=k8s.helm.v3.FetchOpts(
-                    repo="https://charts.bitnami.com/bitnami",
-                ),
-                values={
-                    "service":{
-                        "type":"LoadBalancer"
-                    },
-                    "admin":{
-                        "username":self.grafana_username,
-                        "password":self.grafana_password
-                    },
-                    "plugins":[],
-                    "dashboardConfigMaps":{},
-                }
-            ),
-        )
+        # self.grafana_chart = k8s.helm.v3.Chart(
+        #     "grafana",
+        #     k8s.helm.v3.ChartOpts( # TODO add bitnami/grafana
+        #         chart="grafana",
+        #         version="3.4.7",
+        #         fetch_opts=k8s.helm.v3.FetchOpts(
+        #             repo="https://charts.bitnami.com/bitnami",
+        #         ),
+        #         values={
+        #             "service":{
+        #                 "type":"LoadBalancer"
+        #             },
+        #             "admin":{
+        #                 "username":self.grafana_username,
+        #                 "password":self.grafana_password
+        #             },
+        #             "plugins":[],
+        #             "dashboardConfigMaps":{},
+        #         }
+        #     ),
+        # )
 
 
     def add_service_monitor(self, name:str, labels, namespace:str, interval:str, port=8080, k8s_provider=None):
-        exposed_service = k8s.core.v1.Service("exposed-service-"+name,
-                spec=k8s.core.v1.ServiceSpecArgs(
-                    type='Service',
-                    selector=labels,
-                    ports=[k8s.core.v1.ServicePortArgs(port=port)],
-                ), __opts__=ResourceOptions(provider=k8s_provider))
+        # exposed_service = k8s.core.v1.Service("exposed-service-"+name,
+        #         spec=k8s.core.v1.ServiceSpecArgs(
+        #             type='Service',
+        #             selector=labels,
+        #             ports=[k8s.core.v1.ServicePortArgs(port=port)],
+        #         ), __opts__=ResourceOptions(provider=k8s_provider))
 
-        service_monitor = k8s.core.v1.Service("service-monitor-"+name,
-                spec=k8s.core.v1.ServiceSpecArgs(
-                    type='ServiceMonitor',
-                    selector=labels,
-                    ports=[k8s.core.v1.ServicePortArgs(port=port)],
-                ), __opts__=ResourceOptions(provider=k8s_provider))
+        # service_monitor = k8s.core.v1.Service("service-monitor-"+name,
+        #         spec=k8s.core.v1.ServiceSpecArgs(
+        #             type='ServiceMonitor',
+        #             selector=labels,
+        #             ports=[k8s.core.v1.ServicePortArgs(port=port)],
+        #         ), __opts__=ResourceOptions(provider=k8s_provider))
+        pass
 
 
     def add_grafana_dashboard(self, dashboard, columns_per_row=2):

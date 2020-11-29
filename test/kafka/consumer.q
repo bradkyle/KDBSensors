@@ -16,12 +16,19 @@ kfk_cfg:(!) . flip(
     );
 client:.kfk.Consumer[kfk_cfg];
 
-
-
+// reads from kafka topic  
+// and writes to partitioned table 
+// that can then be transitioned to 
+// long term permenant storage
+events:();
 upd:{[msg]
   msg[`data]:"c"$msg[`data];
   msg[`rcvtime]:.z.p;
-  show msg;
+  if[count[events];[
+      path:.Q.par[`:data;];
+    ]];
+
+
   };
 
 // Subscribe to topic1 and topic2 with different callbacks from a single client
