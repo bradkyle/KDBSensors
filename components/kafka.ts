@@ -13,10 +13,9 @@ export interface KafkaTopicArgs {
 // Arguments for the demo app.
 export interface KafkaArgs {
     provider: k8s.Provider; // Provider resource for the target Kubernetes cluster.
-    imageTag: string; // Tag for the kuard image to deploy.
 }
 
-export class KafkaOperator extends pulumi.ComponentResource {
+export class Kafka extends pulumi.ComponentResource {
 
     constructor(name: string,
                 args: KafkaArgs,
