@@ -47,6 +47,31 @@ export class ThanosOperator extends pulumi.ComponentResource {
 
 
 
+export class MonitoringArgs {
+
+}
+
+
+export class Monitoring extends pulumi.ComponentResource {
+
+    constructor(name: string,
+                args: MonitoringArgs,
+                opts: pulumi.ComponentResourceOptions = {}) {
+        super("beast:sensor:sensor", name, args, opts);
+
+
+    }
+
+
+    addMonitor(name:string, args:MonitorArgs) {
+
+    }
+
+
+}
+
+
+
 
 
 

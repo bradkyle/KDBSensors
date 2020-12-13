@@ -11,19 +11,22 @@ export interface DevConfig {
 }
 
 export function setup(config:DevConfig) {
-        let mon = new monit.Monitoring();
+        let mon = new monit.Monitoring("monitoring",{
+
+        });
+
         let kfk = new kafka.Kafka("kafka",{
             provider:local.provider,
         });  
 
-        let sensors Record<string, sensor.Sensor> = {}
+        let sensors:Record<string, sensor.Sensor> = {};
 
         sensors["binance"] = new sensor.Sensor("binance",{
             provider:local.provider,
             kafka:kfk,
             topicName:"binance",
             sensor:{
-
+                
             },
             persist:{
                 gcsPath:""
