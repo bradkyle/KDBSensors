@@ -17,7 +17,7 @@ export interface PersistArgs {
     imageName?:string;
     dockerfile?:string;
     dockercontext?:string;
-    dataMountPath:string;
+    gcsPath:string;
     storageProvider?:StorageProvider
 }
 
@@ -30,7 +30,7 @@ export interface SensorArgs {
 // Arguments for the demo app.
 export interface SensorPipelineArgs {
     provider: k8s.Provider; // Provider resource for the target Kubernetes cluster.
-    kafka:kafka.KafkaOperator,
+    kafka:kafka.Kafka,
     topicName?:string;
     pullPolicy?:string
     sensor: SensorArgs;

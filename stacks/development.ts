@@ -4,6 +4,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as local from "../components/cluster/lcl"
 import * as monit from "../components/monitoring"
 import * as kafka from "../components/kafka"
+import * as sensor from "../components/sensor"
 
 export interface DevConfig {
 
@@ -17,11 +18,16 @@ export function setup(config:DevConfig) {
 
         let sensors Record<string, sensor.Sensor> = {}
 
-        sensors["binance"] = new sensor.Sensor("binance";{
-            gcsMountPath:"",
+        sensors["binance"] = new sensor.Sensor("binance",{
             provider:local.provider,
+            kafka:kfk,
+            topicName:"binance",
+            sensor:{
 
-
+            },
+            persist:{
+                gcsPath:""
+            }
         });
         
 };
